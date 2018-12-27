@@ -1,0 +1,8 @@
+C:\Users\Faven\Desktop\Minebot\plugins\DebugPlugin.dll
+C:\Users\Faven\Desktop\Minebot\plugins\DebugPlugin.pdb
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\ChatSpyPlugin\obj\Debug\ChatSpyPlugin.csprojResolveAssemblyReference.cache
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\ChatSpyPlugin\obj\Debug\DebugPlugin.ChatForm.resources
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\ChatSpyPlugin\obj\Debug\ChatSpyPlugin.csproj.GenerateResource.Cache
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\ChatSpyPlugin\obj\Debug\ChatSpyPlugin.csproj.CoreCompileInputs.cache
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\ChatSpyPlugin\obj\Debug\DebugPlugin.dll
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\ChatSpyPlugin\obj\Debug\DebugPlugin.pdb

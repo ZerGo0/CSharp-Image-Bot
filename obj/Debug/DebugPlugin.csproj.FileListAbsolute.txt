@@ -1,0 +1,46 @@
+C:\Users\Faven\Desktop\Minebot\plugins\DebugPlugin.dll
+C:\Users\Faven\Desktop\Minebot\plugins\DebugPlugin.pdb
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\ChatSpyPlugin\obj\Debug\DebugPlugin.DebugForm.resources
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\ChatSpyPlugin\obj\Debug\DebugPlugin.csproj.GenerateResource.Cache
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\ChatSpyPlugin\obj\Debug\DebugPlugin.csproj.CoreCompileInputs.cache
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\ChatSpyPlugin\obj\Debug\DebugPlugin.dll
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\ChatSpyPlugin\obj\Debug\DebugPlugin.pdb
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\ChatSpyPlugin\obj\Debug\DebugPlugin.csprojResolveAssemblyReference.cache
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\DebugPlugin\obj\Debug\DebugPlugin.csprojResolveAssemblyReference.cache
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\DebugPlugin\obj\Debug\DebugPlugin.DebugForm.resources
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\DebugPlugin\obj\Debug\DebugPlugin.csproj.GenerateResource.Cache
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\DebugPlugin\obj\Debug\DebugPlugin.csproj.CoreCompileInputs.cache
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\DebugPlugin\obj\Debug\DebugPlugin.dll
+C:\Users\Faven\Desktop\OQ.MineBot.Plugins-master\ZerGo0 Plugins\DebugPlugin\obj\Debug\DebugPlugin.pdb
+D:\SourceCodes\DebugPlugin\obj\Debug\DebugPlugin.DebugForm.resources
+D:\SourceCodes\DebugPlugin\obj\Debug\DebugPlugin.csproj.GenerateResource.cache
+D:\SourceCodes\DebugPlugin\obj\Debug\DebugPlugin.csproj.CoreCompileInputs.cache
+D:\Minebot\plugins\BotTemplate.exe.config
+D:\Minebot\plugins\BotTemplate.exe
+D:\Minebot\plugins\BotTemplate.pdb
+D:\SourceCodes\DebugPlugin\obj\Debug\DebugPlugin.csproj.CopyComplete
+D:\SourceCodes\DebugPlugin\obj\Debug\BotTemplate.exe
+D:\SourceCodes\DebugPlugin\obj\Debug\BotTemplate.pdb
+D:\Minebot\plugins\x64\concrt140.dll
+D:\Minebot\plugins\x64\cvextern.dll
+D:\Minebot\plugins\x64\msvcp140.dll
+D:\Minebot\plugins\x64\opencv_ffmpeg343_64.dll
+D:\Minebot\plugins\x64\vcruntime140.dll
+D:\Minebot\plugins\x86\concrt140.dll
+D:\Minebot\plugins\x86\cvextern.dll
+D:\Minebot\plugins\x86\msvcp140.dll
+D:\Minebot\plugins\x86\opencv_ffmpeg343.dll
+D:\Minebot\plugins\x86\vcruntime140.dll
+D:\Minebot\plugins\AutoItX3.dll
+D:\Minebot\plugins\AutoItX3_x64.dll
+D:\SourceCodes\DebugPlugin\obj\Debug\DebugPlugin.csprojAssemblyReference.cache
+D:\SourceCodes\BotTemplateBin\BotTemplate.exe.config
+D:\SourceCodes\BotTemplateBin\BotTemplate.exe
+D:\SourceCodes\BotTemplateBin\BotTemplate.pdb
+D:\SourceCodes\BotTemplate\obj\Debug\DebugPlugin.csprojAssemblyReference.cache
+D:\SourceCodes\BotTemplate\obj\Debug\DebugPlugin.DebugForm.resources
+D:\SourceCodes\BotTemplate\obj\Debug\DebugPlugin.csproj.GenerateResource.cache
+D:\SourceCodes\BotTemplate\obj\Debug\DebugPlugin.csproj.CoreCompileInputs.cache
+D:\SourceCodes\BotTemplate\obj\Debug\DebugPlugin.csproj.CopyComplete
+D:\SourceCodes\BotTemplate\obj\Debug\BotTemplate.exe
+D:\SourceCodes\BotTemplate\obj\Debug\BotTemplate.pdb
