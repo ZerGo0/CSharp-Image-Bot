@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace BotTemplate.Helpers
 {
-    public class ClickWindow
+    public class Clicks
     {
         [DllImport("user32.dll")]
         private static extern bool ClientToScreen(IntPtr hWnd, ref Point lpPoint);
@@ -38,25 +38,19 @@ namespace BotTemplate.Helpers
         private static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass,
             string lpszWindow);
 
-        public void ClickInBackground(int x, int y, int numClicks = 1, int delay = 0, string button = "left")
+        public static void ClickInBackground(IntPtr wndHandle, int x, int y, int numClicks = 1, int delay = 0, string button = "left")
         {
-            //var testHandle = AutoItX.ControlGetHandle("MEmu 2.5.0 - MEmu","");
             var num = MakeButtonMessage(button);
             var lParam = MakeLong(x, y);
             for (var i = 0; i < numClicks; i++)
             {
-                PostMessage((IntPtr)0x000F125C, num, 0u, lParam);
-                PostMessage((IntPtr)0x000F125C, num + 1u, 0u, lParam);
+                PostMessage(wndHandle, num, 0u, lParam);
+                PostMessage(wndHandle, num + 1u, 0u, lParam);
                 Thread.Sleep(delay);
             }
         }
 
-        private int MakeLParam(int p, int p2)
-        {
-            return (p2 << 16) | (p & 0xFFFF);
-        }
-
-        private uint MakeButtonMessage(string button)
+        private static uint MakeButtonMessage(string button)
         {
             var result = 0u;
             string a;
@@ -80,7 +74,7 @@ namespace BotTemplate.Helpers
             return result;
         }
 
-        private uint MakeLong(int lowWord, int hiWord)
+        private static uint MakeLong(int lowWord, int hiWord)
         {
             return (uint)((hiWord * 65536) | (lowWord & 65535));
         }
@@ -115,12 +109,11 @@ namespace BotTemplate.Helpers
             var oldPos = Cursor.Position;
             var oldFocus = GetForegroundWindow();
             ClientToScreen(wndHandle, ref clientPoint);
-
             Cursor.Position = new Point(clientPoint.X, clientPoint.Y);
-
+            
             var inputMouseDown = new INPUT { Type = 0 };
             inputMouseDown.Data.Mouse.Flags = 0x0002;
-
+            
             var inputMouseUp = new INPUT { Type = 0 };
             inputMouseUp.Data.Mouse.Flags = 0x0004;
 

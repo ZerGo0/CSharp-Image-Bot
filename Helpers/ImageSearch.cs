@@ -151,7 +151,8 @@ namespace BotTemplate.Helpers
         public static bool FindClickEmgu([MarshalAs(UnmanagedType.LPStr)] string imagePath, double tolerance = 0.9)
         {
             //TODO: Make the capture method chooseable
-            var screenCap = CaptureImage.CaptureFromScreen(DebugForm.WindowRect);
+            var screenCap = new Bitmap(DebugForm.WindowRect.Width - DebugForm.WindowRect.X,
+                DebugForm.WindowRect.Height - DebugForm.WindowRect.Y);
         
             var source = new Image<Bgr, byte>(screenCap);
             var imageToShow = source.Copy();
@@ -159,9 +160,7 @@ namespace BotTemplate.Helpers
         
             using (var result = source.MatchTemplate(template, TemplateMatchingType.CcorrNormed))
             {
-                double[] minValues, maxValues;
-                Point[] minLocations, maxLocations;
-                result.MinMax(out minValues, out maxValues, out minLocations, out maxLocations);
+                result.MinMax(out _, out var maxValues, out _, out var maxLocations);
         
                 if (!(maxValues[0] > tolerance)) return false;
         
@@ -173,7 +172,7 @@ namespace BotTemplate.Helpers
                 var clickY = maxLocations[0].Y + template.Size.Height / 2;
         
                 //TODO: Switch based on selected click type
-                ClickWindow.ClickUsingMouse(DebugForm.WindowHandle, new Point(clickX, clickY));
+                Clicks.ClickUsingMouse(DebugForm.WindowHandle, new Point(clickX, clickY));
         
                 DebugForm.DebugPictureBox.Invoke(new MethodInvoker(delegate
                 {
@@ -185,6 +184,10 @@ namespace BotTemplate.Helpers
 
         public static bool ImageSearchEmgu([MarshalAs(UnmanagedType.LPStr)] string[] imagePath, double tolerance = 0.9)
         {
+            
+            //Not very reliable/not really working right now, sizing issues mainly
+            //var screenCap = CaptureImage.DWMFunctions.CaptureDWM();
+            
             var screenCap = new Bitmap(DebugForm.WindowRect.Width - DebugForm.WindowRect.X,
                 DebugForm.WindowRect.Height - DebugForm.WindowRect.Y);
         
@@ -343,80 +346,95 @@ namespace BotTemplate.Helpers
         [DllImport("dwmapi.dll")]
         private static extern int DwmUpdateThumbnailProperties(IntPtr hThumb, ref DWM_THUMBNAIL_PROPERTIES props);
 
-        [DllImport("user32.dll")]
-        private static extern ulong GetWindowLongA(IntPtr hWnd, int nIndex);
-
-        [DllImport("user32.dll")]
-        private static extern int EnumWindows(EnumWindowsCallback lpEnumFunc, int lParam);
-
-        private delegate bool EnumWindowsCallback(IntPtr hwnd, int lParam);
-
-        [DllImport("user32.dll")]
-        public static extern void GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
-
         private static IntPtr thumb;
+        private static IntPtr dstHandle;
+        private static string dstTitle;
 
-        public class DWMFunctions
+        public static class DWMFunctions
         {
-            /*private void GetWindowDWM()
+            private static Form _dwmCaptureForm;
+            
+            public static Bitmap CaptureDWM()
             {
-                Window w = new Window() { Handle = WindowHandle, Title = WindowTitle };
-    
                 if (thumb != IntPtr.Zero)
                     DwmUnregisterThumbnail(thumb);
-    
-                int i = DwmRegisterThumbnail(Handle, w.Handle, out thumb);
+                
+                int windowWidth;
+                if (DebugForm.WindowRect.X > DebugForm.WindowRect.Width)
+                {
+                    windowWidth = DebugForm.WindowRect.X  - DebugForm.WindowRect.Width;
+                }
+                else
+                {
+                    windowWidth = DebugForm.WindowRect.Width - DebugForm.WindowRect.X;
+                }
+                var windowHeight = DebugForm.WindowRect.Height - DebugForm.WindowRect.Y;
+
+                _dwmCaptureForm = new Form
+                {
+                    Text = "DWM Capture Window",
+                    Width = windowWidth + 15,
+                    Height = windowHeight + 32,
+                    Left = 0,
+                    Top = 0,
+                    TopMost = true
+                };
+                
+                _dwmCaptureForm.Show();
+
+                int i = DwmRegisterThumbnail(_dwmCaptureForm.Handle,DebugForm.WindowHandle, out thumb);
     
                 if (i == 0)
                     UpdateThumb();
+                
+                DebugForm.GetWindowRect(_dwmCaptureForm.Handle, out var dwmCapRectangle);
+                
+                var dwmCapture = CaptureFromScreen(dwmCapRectangle);
+                
+                //Not sure if ClientRec or DisplayRec
+                DebugForm.DebugPictureBox.Invoke(
+                    new MethodInvoker(delegate { DebugForm.DebugPictureBox.Image = dwmCapture; }));
+                
+                DwmUnregisterThumbnail(thumb);
+                _dwmCaptureForm.Close();
+                _dwmCaptureForm = null;
+
+                return dwmCapture;
             }
-    
-            private bool Callback(IntPtr hwnd, int lParam)
-            {
-                if (Handle != hwnd && (GetWindowLongA(hwnd, GWL_STYLE) & TARGETWINDOW) == TARGETWINDOW)
-                {
-                    StringBuilder sb = new StringBuilder(100);
-                    GetWindowText(hwnd, sb, sb.Capacity);
-    
-                    if (sb.ToString().Contains("Dungeon Hunter Champions"))
-                    {
-                        WindowHandle = hwnd;
-                        WindowTitle = sb.ToString();
-                    }
-                }
-    
-                return true; //continue enumeration
-            }
-    
-            private void UpdateThumb()
+
+            public static void StopDWM()
             {
                 if (thumb != IntPtr.Zero)
+                    DwmUnregisterThumbnail(thumb);
+            }
+
+            private static void UpdateThumb()
+            {
+                if (thumb == IntPtr.Zero) return;
+                
+                PSIZE size;
+                DwmQueryThumbnailSourceSize(thumb, out size);
+    
+                int testX;
+                if (DebugForm.WindowRect.X > DebugForm.WindowRect.Width)
                 {
-                    PSIZE size;
-                    DwmQueryThumbnailSourceSize(thumb, out size);
-    
-                    DWM_THUMBNAIL_PROPERTIES props = new DWM_THUMBNAIL_PROPERTIES
-                    {
-                        fVisible = true,
-                        dwFlags = DWM_TNP_VISIBLE | DWM_TNP_RECTDESTINATION | DWM_TNP_OPACITY,
-                        opacity = 255,
-                        rcDestination = new Rectangle(0, 0, 500, 500)
-                    };
-    
-                    //if (size.x < ResultBox.Width)
-                    //    props.rcDestination.Right = props.rcDestination.Left + size.x;
-                    //
-                    //if (size.y < ResultBox.Height)
-                    //    props.rcDestination.Bottom = props.rcDestination.Top + size.y;
-    
-                    DwmUpdateThumbnailProperties(thumb, ref props);
-    
-                    Bitmap b = new Bitmap(Width, Height);
-                    DrawToBitmap(b, new Rectangle(0, 0, Width, Height));
-    
-                    DebugImageBox.Image = b;
+                    testX = DebugForm.WindowRect.X  - DebugForm.WindowRect.Width;
                 }
-            }*/
+                else
+                {
+                    testX = DebugForm.WindowRect.Width - DebugForm.WindowRect.X;
+                }
+                var testY = DebugForm.WindowRect.Height - DebugForm.WindowRect.Y;
+                DWM_THUMBNAIL_PROPERTIES props = new DWM_THUMBNAIL_PROPERTIES
+                {
+                    fVisible = true,
+                    dwFlags = DWM_TNP_VISIBLE | DWM_TNP_RECTDESTINATION | DWM_TNP_OPACITY,
+                    opacity = 255,
+                    rcDestination = new Rectangle(0, 0, testX, testY)
+                };
+    
+                DwmUpdateThumbnailProperties(thumb, ref props);
+            }
         }
 
         internal class Window
