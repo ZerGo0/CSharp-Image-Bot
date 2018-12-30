@@ -11,18 +11,13 @@ namespace DebugPlugin
 {
     public partial class DebugForm : Form
     {
-        private const string WindowTitle = "LDPlayer";
-        private const string ControlTitle = "TheRender";
-
-        private const string ImagePath = @"G:\SourceCodes\DHC_Bot\DHC_Bot\Images";
+        private const string WindowTitle = "Application Title";
+        private const string ControlTitle = "Controlname";
 
         public static IntPtr WindowHandle;
         public static IntPtr ControlHandle;
-        public static IntPtr FormHandle;
         public static Rectangle WindowRect;
         public static PictureBox DebugPictureBox;
-        private Button button1;
-        private Button button2;
         private bool BotStarted;
 
         public DebugForm()
@@ -33,8 +28,6 @@ namespace DebugPlugin
         private void MainBotForm_Load(object sender, EventArgs e)
         {
             DebugPictureBox = DebugImageBox;
-
-            FormHandle = Handle;
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -45,7 +38,7 @@ namespace DebugPlugin
                 Thread.CurrentThread.IsBackground = true;
 
                 BotStarted = true;
-                MainLoop();
+                
             }).Start();
         }
 
@@ -53,34 +46,6 @@ namespace DebugPlugin
         {
             BotStarted = false;
             AddBotLog("Bot stopped!");
-        }
-
-        private void MainLoop()
-        {
-            DebugPictureBox = DebugImageBox;
-            while (BotStarted)
-            {
-                //if (!CheckIfAppilcationExists()) return;
-
-                //ClickNew(3100, 1000);
-                /*GetWindowRect((IntPtr)0x000F125C, out WindowRect);
-                DebugPictureBox = DebugImageBox;
-                var mainSceen = ImageSearch.ImageSearchEmgu(new[]
-                {
-                    ImagePath + @"\Test.bmp"
-                }, 0.95);
-                if (mainSceen) ClickNew(240, 260);*/
-
-                var test = CaptureImage.GDI.CaptureWindowGDI(FindWindow(null, "League of Legends"));
-                DebugPictureBox.Invoke(new MethodInvoker(delegate { DebugPictureBox.Image = test; }));
-
-                //if (CheckMainScreen())
-                //{
-                //    if (FarmAdvMan.Checked) FarmAdventure();
-                //}
-                //
-                Thread.Sleep(500);
-            }
         }
 
         [DllImport("user32.dll")]
@@ -169,66 +134,12 @@ namespace DebugPlugin
             return true;
         }
 
-        #region Test Bot Routines
-
-        //private bool CheckMainScreen()
-        //{
-        //    ImageSearchClass.FindClickEmgu(ImagePath + @"\MainScreen\Ad1.bmp", 0.97);
-        //    ImageSearchClass.FindClickEmgu(ImagePath + @"\MainScreen\Ad2.bmp", 0.97);
-        //
-        //    var mainSceen = ImageSearchClass.ImageSearchEmgu(new[]
-        //    {
-        //        ImagePath + @"\MainScreen\MainScreen1.bmp",
-        //        ImagePath + @"\MainScreen\MainScreen2.bmp",
-        //        ImagePath + @"\MainScreen\MainScreen3.bmp",
-        //        ImagePath + @"\MainScreen\MainScreen4.bmp"
-        //    }, 0.98);
-        //
-        //    if (mainSceen) AddBotLog("MainScreen Located!");
-        //
-        //    return mainSceen;
-        //}
-
-        //private void FarmAdventure()
-        //{
-        //    if (CheckMainScreen())
-        //    {
-        //        ClickWindow.ClickUsingMouse(WindowHandle, new Point(760, 580));
-        //        ImageSearchClass.WaitForImageAndClick(ImagePath + @"\Adventure\AdventurePic.bmp", 0.98);
-        //        //ClickOnPoint(WindowHandle, new Point(170, 450));
-        //        ImageSearchClass.WaitForImageAndClick(ImagePath + @"\Adventure\AdventureBattle1.bmp", 0.98);
-        //        //ClickOnPoint(WindowHandle, new Point(650, 450));
-        //        Thread.Sleep(500);
-        //
-        //        var skip = ImageSearchClass.ImageSearchEmgu(new[]
-        //        {
-        //            ImagePath + @"\Adventure\AdventureSkip.bmp"
-        //        }, 0.98);
-        //        if (skip) ClickWindow.ClickUsingMouse(WindowHandle, new Point(730, 525));
-        //
-        //        ImageSearchClass.WaitForImage(new[] { ImagePath + @"\Adventure\AdventureBattle2.bmp" }, 0.98);
-        //        ClickWindow.ClickUsingMouse(WindowHandle, new Point(650, 510));
-        //
-        //        ImageSearchClass.WaitForImage(new[] { ImagePath + @"\Adventure\AdventureInBattle.bmp" }, 0.99);
-        //        Thread.Sleep(2000);
-        //        ImageSearchClass.FindClickEmgu(ImagePath + @"\Adventure\AdventureAutoOff.bmp", 0.85);
-        //
-        //        ImageSearchClass.WaitForImage(new[]
-        //            {
-        //                ImagePath + @"\Adventure\AdventureOK.bmp",
-        //                ImagePath + @"\Adventure\AdventureSell.bmp",
-        //                ImagePath + @"\Adventure\AdventureBattleLost.bmp"
-        //            }
-        //            , 0.98);
-        //    }
-        //}
-
-        #endregion
-
         #region Debug Capture
 
         private void ScreenCapButton_Click(object sender, EventArgs e)
         {
+            DebugPictureBox.Invoke(new MethodInvoker(delegate { DebugForm.DebugPictureBox.Image = null; }));
+            
             if (!GetWindow()) return;
 
             DebugImageBox.Image = CaptureImage.CaptureFromScreen(WindowRect);
@@ -236,16 +147,20 @@ namespace DebugPlugin
 
         private void GDICapButton_Click(object sender, EventArgs e)
         {
+            DebugPictureBox.Invoke(new MethodInvoker(delegate { DebugForm.DebugPictureBox.Image = null; }));
+            
             if (!GetWindow()) return;
 
-            DebugImageBox.Image = CaptureImage.GDI.CaptureWindowGDI(WindowHandle);
+            DebugImageBox.Image = CaptureImage.CaptureWindowGDI(WindowHandle);
         }
 
         private void DWMCapButton_Click(object sender, EventArgs e)
         {
+            DebugPictureBox.Invoke(new MethodInvoker(delegate { DebugForm.DebugPictureBox.Image = null; }));
+            
             if (!GetWindow()) return;
             
-            CaptureImage.DWMFunctions.CaptureDWM();
+            CaptureImage.CaptureDWM();
         }
 
         #endregion
@@ -286,7 +201,6 @@ namespace DebugPlugin
 
         private void CSharpISButton_Click(object sender, EventArgs e)
         {
-            
             DebugPictureBox.Invoke(new MethodInvoker(delegate { DebugForm.DebugPictureBox.Image = null; }));
             
             if (!GetWindow()) return;

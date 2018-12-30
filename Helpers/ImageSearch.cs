@@ -118,70 +118,6 @@ namespace BotTemplate.Helpers
 
         #region ImageSearch EmguCV (Fast, Accurate, easy)
 
-        public static void WaitForImage([MarshalAs(UnmanagedType.LPStr)] string[] images, double tolerance = 0.9)
-        {
-            while (true)
-            {
-                foreach (var image in images)
-                {
-                    var result = ImageSearchEmgu(new[]
-                    {
-                        image
-                    }, tolerance);
-        
-                    if (result) return;
-                }
-        
-                Thread.Sleep(500);
-            }
-        }
-
-        public static void WaitForImageAndClick([MarshalAs(UnmanagedType.LPStr)] string image, double tolerance = 0.9)
-        {
-            while (true)
-            {
-                var result = FindClickEmgu(image, tolerance);
-        
-                if (result) return;
-        
-                Thread.Sleep(500);
-            }
-        }
-
-        public static bool FindClickEmgu([MarshalAs(UnmanagedType.LPStr)] string imagePath, double tolerance = 0.9)
-        {
-            //TODO: Make the capture method chooseable
-            var screenCap = new Bitmap(DebugForm.WindowRect.Width - DebugForm.WindowRect.X,
-                DebugForm.WindowRect.Height - DebugForm.WindowRect.Y);
-        
-            var source = new Image<Bgr, byte>(screenCap);
-            var imageToShow = source.Copy();
-            var template = new Image<Bgr, byte>(imagePath);
-        
-            using (var result = source.MatchTemplate(template, TemplateMatchingType.CcorrNormed))
-            {
-                result.MinMax(out _, out var maxValues, out _, out var maxLocations);
-        
-                if (!(maxValues[0] > tolerance)) return false;
-        
-                var match = new Rectangle(maxLocations[0], template.Size);
-                imageToShow.Draw(match, new Bgr(Color.Red), 2);
-        
-                //Click location in the middle of the picture
-                var clickX = maxLocations[0].X + template.Size.Width / 2;
-                var clickY = maxLocations[0].Y + template.Size.Height / 2;
-        
-                //TODO: Switch based on selected click type
-                Clicks.ClickUsingMouse(DebugForm.WindowHandle, new Point(clickX, clickY));
-        
-                DebugForm.DebugPictureBox.Invoke(new MethodInvoker(delegate
-                {
-                    DebugForm.DebugPictureBox.Image = imageToShow.Bitmap;
-                }));
-                return true;
-            }
-        }
-
         public static bool ImageSearchEmgu([MarshalAs(UnmanagedType.LPStr)] string[] imagePath, double tolerance = 0.9)
         {
             
@@ -221,6 +157,74 @@ namespace BotTemplate.Helpers
         }
 
         #endregion
+
+        #region Emgu Extra functions
+
+        public static void WaitForImage([MarshalAs(UnmanagedType.LPStr)] string[] images, double tolerance = 0.9)
+        {
+            while (true)
+            {
+                foreach (var image in images)
+                {
+                    var result = ImageSearchEmgu(new[]
+                    {
+                        image
+                    }, tolerance);
+        
+                    if (result) return;
+                }
+        
+                Thread.Sleep(500);
+            }
+        }
+    
+        public static void WaitForImageAndClick([MarshalAs(UnmanagedType.LPStr)] string image, double tolerance = 0.9)
+        {
+            while (true)
+            {
+                var result = FindClickEmgu(image, tolerance);
+        
+                if (result) return;
+        
+                Thread.Sleep(500);
+            }
+        }
+    
+        public static bool FindClickEmgu([MarshalAs(UnmanagedType.LPStr)] string imagePath, double tolerance = 0.9)
+        {
+            //TODO: Make the capture method chooseable
+            var screenCap = new Bitmap(DebugForm.WindowRect.Width - DebugForm.WindowRect.X,
+                DebugForm.WindowRect.Height - DebugForm.WindowRect.Y);
+        
+            var source = new Image<Bgr, byte>(screenCap);
+            var imageToShow = source.Copy();
+            var template = new Image<Bgr, byte>(imagePath);
+        
+            using (var result = source.MatchTemplate(template, TemplateMatchingType.CcorrNormed))
+            {
+                result.MinMax(out _, out var maxValues, out _, out var maxLocations);
+        
+                if (!(maxValues[0] > tolerance)) return false;
+        
+                var match = new Rectangle(maxLocations[0], template.Size);
+                imageToShow.Draw(match, new Bgr(Color.Red), 2);
+        
+                //Click location in the middle of the picture
+                var clickX = maxLocations[0].X + template.Size.Width / 2;
+                var clickY = maxLocations[0].Y + template.Size.Height / 2;
+        
+                //TODO: Switch based on selected click type
+                Clicks.ClickUsingMouse(DebugForm.WindowHandle, new Point(clickX, clickY));
+        
+                DebugForm.DebugPictureBox.Invoke(new MethodInvoker(delegate
+                {
+                    DebugForm.DebugPictureBox.Image = imageToShow.Bitmap;
+                }));
+                return true;
+            }
+        }
+
+        #endregion
     }
 
     public static class CaptureImage
@@ -236,6 +240,82 @@ namespace BotTemplate.Helpers
             g.CopyFromScreen(rec.X, rec.Y, 0, 0, screenCap.Size, CopyPixelOperation.SourceCopy);
 
             return screenCap;
+        }
+        
+        public static Image CaptureScreenGDI()
+        {
+            return CaptureWindowGDI(User32.GetDesktopWindow());
+        }
+
+        public static Image CaptureWindowGDI(IntPtr handle)
+        {
+            var hdcSrc = User32.GetWindowDC(handle);
+
+            var windowRect = new RECT();
+            User32.GetWindowRect(handle, ref windowRect);
+
+            var width = windowRect.right - windowRect.left;
+            var height = windowRect.bottom - windowRect.top;
+
+            var hdcDest = Gdi32.CreateCompatibleDC(hdcSrc);
+            var hBitmap = Gdi32.CreateCompatibleBitmap(hdcSrc, width, height);
+
+            var hOld = Gdi32.SelectObject(hdcDest, hBitmap);
+            Gdi32.BitBlt(hdcDest, 0, 0, width, height, hdcSrc, 0, 0, 13369376);
+            Gdi32.SelectObject(hdcDest, hOld);
+            Gdi32.DeleteDC(hdcDest);
+            User32.ReleaseDC(handle, hdcSrc);
+
+            Image image = Image.FromHbitmap(hBitmap);
+            Gdi32.DeleteObject(hBitmap);
+
+            return image;
+        }
+        
+        public static Bitmap CaptureDWM()
+        {
+            if (thumb != IntPtr.Zero)
+                DwmUnregisterThumbnail(thumb);
+                
+            int windowWidth;
+            if (DebugForm.WindowRect.X > DebugForm.WindowRect.Width)
+            {
+                windowWidth = DebugForm.WindowRect.X  - DebugForm.WindowRect.Width;
+            }
+            else
+            {
+                windowWidth = DebugForm.WindowRect.Width - DebugForm.WindowRect.X;
+            }
+            var windowHeight = DebugForm.WindowRect.Height - DebugForm.WindowRect.Y;
+
+            var dwmCaptureForm = new Form
+            {
+                Text = "DWM Capture Window",
+                Width = windowWidth + 15,
+                Height = windowHeight + 32,
+                Left = 0,
+                Top = 0,
+                TopMost = true
+            };
+                
+            dwmCaptureForm.Show();
+
+            int i = DwmRegisterThumbnail(dwmCaptureForm.Handle,DebugForm.WindowHandle, out thumb);
+    
+            if (i == 0)
+                DWMFunctions.UpdateThumb();
+                
+            DebugForm.GetWindowRect(dwmCaptureForm.Handle, out var dwmCapRectangle);
+                
+            var dwmCapture = CaptureFromScreen(dwmCapRectangle);
+            
+            DebugForm.DebugPictureBox.Invoke(
+                new MethodInvoker(delegate { DebugForm.DebugPictureBox.Image = dwmCapture; }));
+                
+            DwmUnregisterThumbnail(thumb);
+            dwmCaptureForm.Close();
+
+            return dwmCapture;
         }
 
         #endregion
@@ -289,35 +369,7 @@ namespace BotTemplate.Helpers
         }
         public static class GDI
         {
-            public static Image CaptureScreen()
-            {
-                return CaptureWindowGDI(User32.GetDesktopWindow());
-            }
-
-            public static Image CaptureWindowGDI(IntPtr handle)
-            {
-                var hdcSrc = User32.GetWindowDC(handle);
-
-                var windowRect = new RECT();
-                User32.GetWindowRect(handle, ref windowRect);
-
-                var width = windowRect.right - windowRect.left;
-                var height = windowRect.bottom - windowRect.top;
-
-                var hdcDest = Gdi32.CreateCompatibleDC(hdcSrc);
-                var hBitmap = Gdi32.CreateCompatibleBitmap(hdcSrc, width, height);
-
-                var hOld = Gdi32.SelectObject(hdcDest, hBitmap);
-                Gdi32.BitBlt(hdcDest, 0, 0, width, height, hdcSrc, 0, 0, 13369376);
-                Gdi32.SelectObject(hdcDest, hOld);
-                Gdi32.DeleteDC(hdcDest);
-                User32.ReleaseDC(handle, hdcSrc);
-
-                Image image = Image.FromHbitmap(hBitmap);
-                Gdi32.DeleteObject(hBitmap);
-
-                return image;
-            }
+            
         }
 
         #endregion
@@ -334,81 +386,19 @@ namespace BotTemplate.Helpers
         private static readonly ulong WS_BORDER = 0x00800000L;
         private static readonly ulong TARGETWINDOW = WS_BORDER | WS_VISIBLE;
 
-        [DllImport("dwmapi.dll")]
-        private static extern int DwmRegisterThumbnail(IntPtr dest, IntPtr src, out IntPtr thumb);
-
-        [DllImport("dwmapi.dll")]
-        private static extern int DwmUnregisterThumbnail(IntPtr thumb);
-
-        [DllImport("dwmapi.dll")]
-        private static extern int DwmQueryThumbnailSourceSize(IntPtr thumb, out PSIZE size);
-
-        [DllImport("dwmapi.dll")]
-        private static extern int DwmUpdateThumbnailProperties(IntPtr hThumb, ref DWM_THUMBNAIL_PROPERTIES props);
-
         private static IntPtr thumb;
         private static IntPtr dstHandle;
         private static string dstTitle;
 
         public static class DWMFunctions
         {
-            private static Form _dwmCaptureForm;
-            
-            public static Bitmap CaptureDWM()
-            {
-                if (thumb != IntPtr.Zero)
-                    DwmUnregisterThumbnail(thumb);
-                
-                int windowWidth;
-                if (DebugForm.WindowRect.X > DebugForm.WindowRect.Width)
-                {
-                    windowWidth = DebugForm.WindowRect.X  - DebugForm.WindowRect.Width;
-                }
-                else
-                {
-                    windowWidth = DebugForm.WindowRect.Width - DebugForm.WindowRect.X;
-                }
-                var windowHeight = DebugForm.WindowRect.Height - DebugForm.WindowRect.Y;
-
-                _dwmCaptureForm = new Form
-                {
-                    Text = "DWM Capture Window",
-                    Width = windowWidth + 15,
-                    Height = windowHeight + 32,
-                    Left = 0,
-                    Top = 0,
-                    TopMost = true
-                };
-                
-                _dwmCaptureForm.Show();
-
-                int i = DwmRegisterThumbnail(_dwmCaptureForm.Handle,DebugForm.WindowHandle, out thumb);
-    
-                if (i == 0)
-                    UpdateThumb();
-                
-                DebugForm.GetWindowRect(_dwmCaptureForm.Handle, out var dwmCapRectangle);
-                
-                var dwmCapture = CaptureFromScreen(dwmCapRectangle);
-                
-                //Not sure if ClientRec or DisplayRec
-                DebugForm.DebugPictureBox.Invoke(
-                    new MethodInvoker(delegate { DebugForm.DebugPictureBox.Image = dwmCapture; }));
-                
-                DwmUnregisterThumbnail(thumb);
-                _dwmCaptureForm.Close();
-                _dwmCaptureForm = null;
-
-                return dwmCapture;
-            }
-
             public static void StopDWM()
             {
                 if (thumb != IntPtr.Zero)
                     DwmUnregisterThumbnail(thumb);
             }
 
-            private static void UpdateThumb()
+            public static void UpdateThumb()
             {
                 if (thumb == IntPtr.Zero) return;
                 
@@ -482,6 +472,18 @@ namespace BotTemplate.Helpers
             public int x;
             public int y;
         }
+        
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmRegisterThumbnail(IntPtr dest, IntPtr src, out IntPtr thumb);
+
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmUnregisterThumbnail(IntPtr thumb);
+
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmQueryThumbnailSourceSize(IntPtr thumb, out PSIZE size);
+
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmUpdateThumbnailProperties(IntPtr hThumb, ref DWM_THUMBNAIL_PROPERTIES props);
 
         #endregion
     }
