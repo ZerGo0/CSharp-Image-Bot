@@ -43,12 +43,16 @@ namespace DebugPlugin
             this.FarmAdvMan = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label8 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.StartEmuButton = new System.Windows.Forms.Button();
+            this.CheckEmulatorButton = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.DWMCapButton = new System.Windows.Forms.Button();
             this.GDICapButton = new System.Windows.Forms.Button();
             this.ScreenCapButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
-            this.button7 = new System.Windows.Forms.Button();
+            this.ClickSendMSGButton = new System.Windows.Forms.Button();
             this.ClickMouseButton = new System.Windows.Forms.Button();
             this.ClickPostMSGButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
@@ -62,7 +66,12 @@ namespace DebugPlugin
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
+            this.ClickXCoord = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.ClickYCoord = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.ClickAmount = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.DebugImageBox)).BeginInit();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -187,13 +196,22 @@ namespace DebugPlugin
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.button3);
+            this.tabPage2.Controls.Add(this.label11);
+            this.tabPage2.Controls.Add(this.ClickAmount);
+            this.tabPage2.Controls.Add(this.label10);
+            this.tabPage2.Controls.Add(this.ClickYCoord);
+            this.tabPage2.Controls.Add(this.label9);
+            this.tabPage2.Controls.Add(this.ClickXCoord);
+            this.tabPage2.Controls.Add(this.label8);
+            this.tabPage2.Controls.Add(this.button1);
+            this.tabPage2.Controls.Add(this.StartEmuButton);
+            this.tabPage2.Controls.Add(this.CheckEmulatorButton);
             this.tabPage2.Controls.Add(this.label7);
             this.tabPage2.Controls.Add(this.DWMCapButton);
             this.tabPage2.Controls.Add(this.GDICapButton);
             this.tabPage2.Controls.Add(this.ScreenCapButton);
             this.tabPage2.Controls.Add(this.label6);
-            this.tabPage2.Controls.Add(this.button7);
+            this.tabPage2.Controls.Add(this.ClickSendMSGButton);
             this.tabPage2.Controls.Add(this.ClickMouseButton);
             this.tabPage2.Controls.Add(this.ClickPostMSGButton);
             this.tabPage2.Controls.Add(this.label5);
@@ -213,6 +231,44 @@ namespace DebugPlugin
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Debug";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 237);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(75, 13);
+            this.label8.TabIndex = 29;
+            this.label8.Text = "Emulator Test:";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(196, 253);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(80, 23);
+            this.button1.TabIndex = 28;
+            this.button1.Text = "Placeholder";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // StartEmuButton
+            // 
+            this.StartEmuButton.Location = new System.Drawing.Point(95, 253);
+            this.StartEmuButton.Name = "StartEmuButton";
+            this.StartEmuButton.Size = new System.Drawing.Size(95, 23);
+            this.StartEmuButton.TabIndex = 27;
+            this.StartEmuButton.Text = "Start Emu";
+            this.StartEmuButton.UseVisualStyleBackColor = true;
+            this.StartEmuButton.Click += new System.EventHandler(this.StartEmuButton_Click);
+            // 
+            // CheckEmulatorButton
+            // 
+            this.CheckEmulatorButton.Location = new System.Drawing.Point(9, 253);
+            this.CheckEmulatorButton.Name = "CheckEmulatorButton";
+            this.CheckEmulatorButton.Size = new System.Drawing.Size(80, 23);
+            this.CheckEmulatorButton.TabIndex = 26;
+            this.CheckEmulatorButton.Text = "Check Emu";
+            this.CheckEmulatorButton.UseVisualStyleBackColor = true;
+            this.CheckEmulatorButton.Click += new System.EventHandler(this.CheckEmulatorButton_Click);
             // 
             // label7
             // 
@@ -262,18 +318,19 @@ namespace DebugPlugin
             this.label6.TabIndex = 21;
             this.label6.Text = "Click Test:";
             // 
-            // button7
+            // ClickSendMSGButton
             // 
-            this.button7.Location = new System.Drawing.Point(196, 185);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(80, 23);
-            this.button7.TabIndex = 20;
-            this.button7.Text = "Placeholder";
-            this.button7.UseVisualStyleBackColor = true;
+            this.ClickSendMSGButton.Location = new System.Drawing.Point(196, 211);
+            this.ClickSendMSGButton.Name = "ClickSendMSGButton";
+            this.ClickSendMSGButton.Size = new System.Drawing.Size(80, 23);
+            this.ClickSendMSGButton.TabIndex = 20;
+            this.ClickSendMSGButton.Text = "SendMSG";
+            this.ClickSendMSGButton.UseVisualStyleBackColor = true;
+            this.ClickSendMSGButton.Click += new System.EventHandler(this.ClickSendMSGButton_Click);
             // 
             // ClickMouseButton
             // 
-            this.ClickMouseButton.Location = new System.Drawing.Point(95, 185);
+            this.ClickMouseButton.Location = new System.Drawing.Point(95, 211);
             this.ClickMouseButton.Name = "ClickMouseButton";
             this.ClickMouseButton.Size = new System.Drawing.Size(95, 23);
             this.ClickMouseButton.TabIndex = 19;
@@ -283,7 +340,7 @@ namespace DebugPlugin
             // 
             // ClickPostMSGButton
             // 
-            this.ClickPostMSGButton.Location = new System.Drawing.Point(9, 185);
+            this.ClickPostMSGButton.Location = new System.Drawing.Point(9, 211);
             this.ClickPostMSGButton.Name = "ClickPostMSGButton";
             this.ClickPostMSGButton.Size = new System.Drawing.Size(80, 23);
             this.ClickPostMSGButton.TabIndex = 18;
@@ -387,16 +444,53 @@ namespace DebugPlugin
             this.label1.TabIndex = 10;
             this.label1.Text = "Debug ImageSearch:";
             // 
-            // button3
+            // ClickXCoord
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button3.Location = new System.Drawing.Point(9, 401);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(80, 23);
-            this.button3.TabIndex = 26;
-            this.button3.Text = "DWM";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.ClickXCoord.Location = new System.Drawing.Point(29, 185);
+            this.ClickXCoord.Name = "ClickXCoord";
+            this.ClickXCoord.Size = new System.Drawing.Size(57, 20);
+            this.ClickXCoord.TabIndex = 30;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 188);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(17, 13);
+            this.label9.TabIndex = 31;
+            this.label9.Text = "X:";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(92, 188);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(17, 13);
+            this.label10.TabIndex = 33;
+            this.label10.Text = "Y:";
+            // 
+            // ClickYCoord
+            // 
+            this.ClickYCoord.Location = new System.Drawing.Point(115, 185);
+            this.ClickYCoord.Name = "ClickYCoord";
+            this.ClickYCoord.Size = new System.Drawing.Size(60, 20);
+            this.ClickYCoord.TabIndex = 32;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(194, 188);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(16, 13);
+            this.label11.TabIndex = 35;
+            this.label11.Text = "n:";
+            // 
+            // ClickAmount
+            // 
+            this.ClickAmount.Location = new System.Drawing.Point(216, 185);
+            this.ClickAmount.Name = "ClickAmount";
+            this.ClickAmount.Size = new System.Drawing.Size(60, 20);
+            this.ClickAmount.TabIndex = 34;
             // 
             // DebugForm
             // 
@@ -439,7 +533,7 @@ namespace DebugPlugin
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button ClickSendMSGButton;
         private System.Windows.Forms.Button ClickMouseButton;
         private System.Windows.Forms.Button ClickPostMSGButton;
         private System.Windows.Forms.Label label5;
@@ -456,6 +550,15 @@ namespace DebugPlugin
         private System.Windows.Forms.Button DWMCapButton;
         private System.Windows.Forms.Button GDICapButton;
         private System.Windows.Forms.Button ScreenCapButton;
-        private Button button3;
+        private Label label8;
+        private Button button1;
+        private Button StartEmuButton;
+        private Button CheckEmulatorButton;
+        private Label label11;
+        private TextBox ClickAmount;
+        private Label label10;
+        private TextBox ClickYCoord;
+        private Label label9;
+        private TextBox ClickXCoord;
     }
 }

@@ -6,6 +6,8 @@ using System.Threading;
 using System.Windows.Forms;
 using AutoIt;
 using BotTemplate.Helpers;
+using DebugPlugin.EmulatorClasses;
+using Microsoft.Win32;
 
 namespace DebugPlugin
 {
@@ -18,6 +20,7 @@ namespace DebugPlugin
         public static IntPtr ControlHandle;
         public static Rectangle WindowRect;
         public static PictureBox DebugPictureBox;
+        private static RichTextBox BotLogTextbox;
         private bool BotStarted;
 
         public DebugForm()
@@ -28,6 +31,8 @@ namespace DebugPlugin
         private void MainBotForm_Load(object sender, EventArgs e)
         {
             DebugPictureBox = DebugImageBox;
+
+            BotLogTextbox = BotLog;
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -89,11 +94,11 @@ namespace DebugPlugin
             return true;
         }
 
-        private void AddBotLog(string text)
+        public static void AddBotLog(string text)
         {
-            BotLog.Invoke(new MethodInvoker(delegate
+            BotLogTextbox.Invoke(new MethodInvoker(delegate
             {
-                BotLog.AppendText("[" + DateTime.Now.ToString("HH:mm:ss") + "] " + text + "\r\n");
+                BotLogTextbox.AppendText("[" + DateTime.Now.ToString("HH:mm:ss") + "] " + text + "\r\n");
             }));
         }
 
@@ -213,20 +218,60 @@ namespace DebugPlugin
         private void ClickPostMSGButton_Click(object sender, EventArgs e)
         {
             if (!GetWindow()) return;
+            
+            var x = 100;
+            var y = 100;
+            var amount = 1;
+            
+            if (ClickXCoord.Text.Length > 0) x = int.Parse(ClickXCoord.Text);
+            if (ClickYCoord.Text.Length > 0) y = int.Parse(ClickYCoord.Text);
+            if (ClickAmount.Text.Length > 0) amount = int.Parse(ClickAmount.Text);
 
-            Clicks.ClickInBackground(ControlHandle != (IntPtr) 0x0 ? ControlHandle : WindowHandle, 100, 100);
+            Clicks.ClickUsingPost(ControlHandle != (IntPtr) 0x0 ? ControlHandle : WindowHandle, x, y, amount);
         }
 
         private void ClickMouseButton_Click(object sender, EventArgs e)
         {
             if (!GetWindow()) return;
+
+            var x = 100;
+            var y = 100;
+            var amount = 1;
             
-            Clicks.ClickUsingMouse(ControlHandle != (IntPtr) 0x0 ? ControlHandle : WindowHandle, new Point(100, 100));
+            if (ClickXCoord.Text.Length > 0) x = int.Parse(ClickXCoord.Text);
+            if (ClickYCoord.Text.Length > 0) y = int.Parse(ClickYCoord.Text);
+            if (ClickAmount.Text.Length > 0) amount = int.Parse(ClickAmount.Text);
+            
+            Clicks.ClickUsingMouse(ControlHandle != (IntPtr) 0x0 ? ControlHandle : WindowHandle, new Point(x, y));
+        }
+        
+        private void ClickSendMSGButton_Click(object sender, EventArgs e)
+        {
+            if (!GetWindow()) return;
+
+            var x = 100;
+            var y = 100;
+            var amount = 1;
+            
+            if (ClickXCoord.Text.Length > 0) x = int.Parse(ClickXCoord.Text);
+            if (ClickYCoord.Text.Length > 0) y = int.Parse(ClickYCoord.Text);
+            if (ClickAmount.Text.Length > 0) amount = int.Parse(ClickAmount.Text);
+            
+            Clicks.ClickUsingSend(ControlHandle != (IntPtr) 0x0 ? ControlHandle : WindowHandle, x, y, amount);
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void CheckEmulatorButton_Click(object sender, EventArgs e)
         {
-            CaptureImage.DWMFunctions.StopDWM();
+            var isInstalled = Nox.IsNoxInstalled();
+
+            AddBotLog(isInstalled ? "Emulator installed!" : "Emulator not installed!");
+        }
+
+        private void StartEmuButton_Click(object sender, EventArgs e)
+        {
+            if (!Nox.IsNoxInstalled()) return;
+
+            Nox.StartNox();
         }
     }
 }

@@ -8,47 +8,31 @@ namespace BotTemplate.Helpers
 {
     public class Clicks
     {
-        #region ClickUsingPostMSG
-
-        public static void ClickInBackground(IntPtr wndHandle, int x, int y, int numClicks = 1, int delay = 0, string button = "left")
+        #region Click WinApi
+        
+        public static void ClickUsingSend(IntPtr wndHandle, int x, int y, int numClicks = 1, int delay = 1, string button = "left")
         {
-            var num = MakeButtonMessage(button);
-            var lParam = MakeLong(x, y);
             for (var i = 0; i < numClicks; i++)
             {
-                PostMessage(wndHandle, num, 0u, lParam);
-                PostMessage(wndHandle, num + 1u, 0u, lParam);
+                SendMessage(wndHandle, 0x201, new IntPtr(0x0001), CreateLParam(x,y));
+                SendMessage(wndHandle, 0x202, new IntPtr(0x0001), CreateLParam(x,y));
                 Thread.Sleep(delay);
             }
         }
 
-        private static uint MakeButtonMessage(string button)
+        public static void ClickUsingPost(IntPtr wndHandle, int x, int y, int numClicks = 1, int delay = 1, string button = "left")
         {
-            var result = 0u;
-            string a;
-            if ((a = button.ToLower()) == null) return result;
-            if (a != "left")
+            for (var i = 0; i < numClicks; i++)
             {
-                if (a != "middle")
-                {
-                    if (a == "right") result = 516u;
-                }
-                else
-                {
-                    result = 519u;
-                }
+                PostMessage(wndHandle, 0x201, new IntPtr(0x0001), CreateLParam(x,y));
+                PostMessage(wndHandle, 0x202, new IntPtr(0x0001), CreateLParam(x,y));
+                Thread.Sleep(delay);
             }
-            else
-            {
-                result = 513u;
-            }
-
-            return result;
         }
-
-        private static uint MakeLong(int lowWord, int hiWord)
+        
+        private static IntPtr CreateLParam(int LoWord, int HiWord)
         {
-            return (uint)((hiWord * 65536) | (lowWord & 65535));
+            return (IntPtr)((HiWord << 16) | (LoWord & 0xffff));
         }
         
         [DllImport("user32.dll")]
@@ -69,7 +53,10 @@ namespace BotTemplate.Helpers
 
 
         [DllImport("user32.dll", SetLastError = true)]
-        private static extern IntPtr PostMessage(IntPtr hWnd, uint msg, uint wParam, uint lParam);
+        private static extern IntPtr PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+        
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
         
         #endregion
 
