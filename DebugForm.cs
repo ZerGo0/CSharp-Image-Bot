@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -21,6 +22,7 @@ namespace DebugPlugin
         public static Rectangle WindowRect;
         public static PictureBox DebugPictureBox;
         private static RichTextBox BotLogTextbox;
+        public static ComboBox SelectedEmuInstance;
         private bool BotStarted;
 
         public DebugForm()
@@ -31,8 +33,8 @@ namespace DebugPlugin
         private void MainBotForm_Load(object sender, EventArgs e)
         {
             DebugPictureBox = DebugImageBox;
-
             BotLogTextbox = BotLog;
+            SelectedEmuInstance = EmulatorInstComboBox;
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -272,6 +274,16 @@ namespace DebugPlugin
             if (!Nox.IsNoxInstalled()) return;
 
             Nox.StartNox();
+        }
+
+        private void EmuListInstanButton_Click(object sender, EventArgs e)
+        {
+            foreach (var item in Nox.ListNoxInstances())
+            {
+                AddBotLog(item);
+                EmulatorInstComboBox.Items.Add(item);
+                EmulatorInstComboBox.SelectedIndex = 0;
+            }
         }
     }
 }

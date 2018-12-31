@@ -43,8 +43,14 @@ namespace DebugPlugin
             this.FarmAdvMan = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label11 = new System.Windows.Forms.Label();
+            this.ClickAmount = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.ClickYCoord = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.ClickXCoord = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.EmuListInstanButton = new System.Windows.Forms.Button();
             this.StartEmuButton = new System.Windows.Forms.Button();
             this.CheckEmulatorButton = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
@@ -66,16 +72,13 @@ namespace DebugPlugin
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.ClickXCoord = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.ClickYCoord = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.ClickAmount = new System.Windows.Forms.TextBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.EmulatorInstComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.DebugImageBox)).BeginInit();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // DebugImageBox
@@ -188,6 +191,7 @@ namespace DebugPlugin
             | System.Windows.Forms.AnchorStyles.Left)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(288, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -202,10 +206,6 @@ namespace DebugPlugin
             this.tabPage2.Controls.Add(this.ClickYCoord);
             this.tabPage2.Controls.Add(this.label9);
             this.tabPage2.Controls.Add(this.ClickXCoord);
-            this.tabPage2.Controls.Add(this.label8);
-            this.tabPage2.Controls.Add(this.button1);
-            this.tabPage2.Controls.Add(this.StartEmuButton);
-            this.tabPage2.Controls.Add(this.CheckEmulatorButton);
             this.tabPage2.Controls.Add(this.label7);
             this.tabPage2.Controls.Add(this.DWMCapButton);
             this.tabPage2.Controls.Add(this.GDICapButton);
@@ -232,27 +232,76 @@ namespace DebugPlugin
             this.tabPage2.Text = "Debug";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(194, 188);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(16, 13);
+            this.label11.TabIndex = 35;
+            this.label11.Text = "n:";
+            // 
+            // ClickAmount
+            // 
+            this.ClickAmount.Location = new System.Drawing.Point(216, 185);
+            this.ClickAmount.Name = "ClickAmount";
+            this.ClickAmount.Size = new System.Drawing.Size(60, 20);
+            this.ClickAmount.TabIndex = 34;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(92, 188);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(17, 13);
+            this.label10.TabIndex = 33;
+            this.label10.Text = "Y:";
+            // 
+            // ClickYCoord
+            // 
+            this.ClickYCoord.Location = new System.Drawing.Point(115, 185);
+            this.ClickYCoord.Name = "ClickYCoord";
+            this.ClickYCoord.Size = new System.Drawing.Size(60, 20);
+            this.ClickYCoord.TabIndex = 32;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 188);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(17, 13);
+            this.label9.TabIndex = 31;
+            this.label9.Text = "X:";
+            // 
+            // ClickXCoord
+            // 
+            this.ClickXCoord.Location = new System.Drawing.Point(29, 185);
+            this.ClickXCoord.Name = "ClickXCoord";
+            this.ClickXCoord.Size = new System.Drawing.Size(57, 20);
+            this.ClickXCoord.TabIndex = 30;
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 237);
+            this.label8.Location = new System.Drawing.Point(6, 30);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(75, 13);
             this.label8.TabIndex = 29;
             this.label8.Text = "Emulator Test:";
             // 
-            // button1
+            // EmuListInstanButton
             // 
-            this.button1.Location = new System.Drawing.Point(196, 253);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(80, 23);
-            this.button1.TabIndex = 28;
-            this.button1.Text = "Placeholder";
-            this.button1.UseVisualStyleBackColor = true;
+            this.EmuListInstanButton.Location = new System.Drawing.Point(196, 46);
+            this.EmuListInstanButton.Name = "EmuListInstanButton";
+            this.EmuListInstanButton.Size = new System.Drawing.Size(80, 23);
+            this.EmuListInstanButton.TabIndex = 28;
+            this.EmuListInstanButton.Text = "List Instances";
+            this.EmuListInstanButton.UseVisualStyleBackColor = true;
+            this.EmuListInstanButton.Click += new System.EventHandler(this.EmuListInstanButton_Click);
             // 
             // StartEmuButton
             // 
-            this.StartEmuButton.Location = new System.Drawing.Point(95, 253);
+            this.StartEmuButton.Location = new System.Drawing.Point(95, 46);
             this.StartEmuButton.Name = "StartEmuButton";
             this.StartEmuButton.Size = new System.Drawing.Size(95, 23);
             this.StartEmuButton.TabIndex = 27;
@@ -262,7 +311,7 @@ namespace DebugPlugin
             // 
             // CheckEmulatorButton
             // 
-            this.CheckEmulatorButton.Location = new System.Drawing.Point(9, 253);
+            this.CheckEmulatorButton.Location = new System.Drawing.Point(9, 46);
             this.CheckEmulatorButton.Name = "CheckEmulatorButton";
             this.CheckEmulatorButton.Size = new System.Drawing.Size(80, 23);
             this.CheckEmulatorButton.TabIndex = 26;
@@ -444,53 +493,28 @@ namespace DebugPlugin
             this.label1.TabIndex = 10;
             this.label1.Text = "Debug ImageSearch:";
             // 
-            // ClickXCoord
+            // tabPage3
             // 
-            this.ClickXCoord.Location = new System.Drawing.Point(29, 185);
-            this.ClickXCoord.Name = "ClickXCoord";
-            this.ClickXCoord.Size = new System.Drawing.Size(57, 20);
-            this.ClickXCoord.TabIndex = 30;
+            this.tabPage3.Controls.Add(this.EmulatorInstComboBox);
+            this.tabPage3.Controls.Add(this.label8);
+            this.tabPage3.Controls.Add(this.CheckEmulatorButton);
+            this.tabPage3.Controls.Add(this.StartEmuButton);
+            this.tabPage3.Controls.Add(this.EmuListInstanButton);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(282, 430);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Emu Debug";
+            this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // label9
+            // EmulatorInstComboBox
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 188);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(17, 13);
-            this.label9.TabIndex = 31;
-            this.label9.Text = "X:";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(92, 188);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(17, 13);
-            this.label10.TabIndex = 33;
-            this.label10.Text = "Y:";
-            // 
-            // ClickYCoord
-            // 
-            this.ClickYCoord.Location = new System.Drawing.Point(115, 185);
-            this.ClickYCoord.Name = "ClickYCoord";
-            this.ClickYCoord.Size = new System.Drawing.Size(60, 20);
-            this.ClickYCoord.TabIndex = 32;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(194, 188);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(16, 13);
-            this.label11.TabIndex = 35;
-            this.label11.Text = "n:";
-            // 
-            // ClickAmount
-            // 
-            this.ClickAmount.Location = new System.Drawing.Point(216, 185);
-            this.ClickAmount.Name = "ClickAmount";
-            this.ClickAmount.Size = new System.Drawing.Size(60, 20);
-            this.ClickAmount.TabIndex = 34;
+            this.EmulatorInstComboBox.FormattingEnabled = true;
+            this.EmulatorInstComboBox.Location = new System.Drawing.Point(9, 6);
+            this.EmulatorInstComboBox.Name = "EmulatorInstComboBox";
+            this.EmulatorInstComboBox.Size = new System.Drawing.Size(83, 21);
+            this.EmulatorInstComboBox.TabIndex = 30;
             // 
             // DebugForm
             // 
@@ -513,6 +537,8 @@ namespace DebugPlugin
             this.tabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -551,7 +577,7 @@ namespace DebugPlugin
         private System.Windows.Forms.Button GDICapButton;
         private System.Windows.Forms.Button ScreenCapButton;
         private Label label8;
-        private Button button1;
+        private Button EmuListInstanButton;
         private Button StartEmuButton;
         private Button CheckEmulatorButton;
         private Label label11;
@@ -560,5 +586,7 @@ namespace DebugPlugin
         private TextBox ClickYCoord;
         private Label label9;
         private TextBox ClickXCoord;
+        private TabPage tabPage3;
+        private ComboBox EmulatorInstComboBox;
     }
 }

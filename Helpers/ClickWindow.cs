@@ -14,8 +14,8 @@ namespace BotTemplate.Helpers
         {
             for (var i = 0; i < numClicks; i++)
             {
-                SendMessage(wndHandle, 0x201, new IntPtr(0x0001), CreateLParam(x,y));
-                SendMessage(wndHandle, 0x202, new IntPtr(0x0001), CreateLParam(x,y));
+                SendMessage(wndHandle, 0x201, 1, CreateLParam(x,y));
+                SendMessage(wndHandle, 0x202, 0, CreateLParam(x,y));
                 Thread.Sleep(delay);
             }
         }
@@ -24,8 +24,8 @@ namespace BotTemplate.Helpers
         {
             for (var i = 0; i < numClicks; i++)
             {
-                PostMessage(wndHandle, 0x201, new IntPtr(0x0001), CreateLParam(x,y));
-                PostMessage(wndHandle, 0x202, new IntPtr(0x0001), CreateLParam(x,y));
+                PostMessage(wndHandle, 0x201, 1, CreateLParam(x,y));
+                PostMessage(wndHandle, 0x202, 0, CreateLParam(x,y));
                 Thread.Sleep(delay);
             }
         }
@@ -53,10 +53,10 @@ namespace BotTemplate.Helpers
 
 
         [DllImport("user32.dll", SetLastError = true)]
-        private static extern IntPtr PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+        private static extern IntPtr PostMessage(IntPtr hWnd, uint msg, int  wParam, IntPtr lParam);
         
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        private static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+        private static extern IntPtr SendMessage(IntPtr hWnd, uint msg, int  wParam, IntPtr lParam);
         
         #endregion
 
