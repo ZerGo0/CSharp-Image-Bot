@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -118,18 +119,22 @@ namespace BotTemplate.Helpers
 
         #region ImageSearch EmguCV (Fast, Accurate, easy)
 
-        public static bool ImageSearchEmgu([MarshalAs(UnmanagedType.LPStr)] string[] imagePath, double tolerance = 0.9)
+        public static bool ImageSearchEmgu([MarshalAs(UnmanagedType.LPStr)] IEnumerable<string> imagePath, double tolerance = 0.9, Bitmap sourceImage = null)
         {
+            var screenCap = sourceImage;
             
             //Not very reliable/not really working right now, sizing issues mainly
             //var screenCap = CaptureImage.DWMFunctions.CaptureDWM();
-            
-            var screenCap = new Bitmap(DebugForm.WindowRect.Width - DebugForm.WindowRect.X,
-                DebugForm.WindowRect.Height - DebugForm.WindowRect.Y);
+
+            if (screenCap == null)
+            {
+                screenCap = new Bitmap(DebugForm.WindowRect.Width - DebugForm.WindowRect.X,
+                    DebugForm.WindowRect.Height - DebugForm.WindowRect.Y);
+                
+                var g = Graphics.FromImage(screenCap);
         
-            var g = Graphics.FromImage(screenCap);
-        
-            g.CopyFromScreen(DebugForm.WindowRect.X, DebugForm.WindowRect.Y, 0, 0, screenCap.Size, CopyPixelOperation.SourceCopy);
+                g.CopyFromScreen(DebugForm.WindowRect.X, DebugForm.WindowRect.Y, 0, 0, screenCap.Size, CopyPixelOperation.SourceCopy);
+            }
         
             var source = new Image<Bgr, byte>(screenCap);
             var imageToShow = source.Copy();

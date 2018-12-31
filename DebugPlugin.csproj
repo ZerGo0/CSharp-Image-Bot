@@ -70,6 +70,7 @@
     <Compile Include="DebugForm.Designer.cs">
       <DependentUpon>DebugForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="EmulatorClasses\ADB.cs" />
     <Compile Include="EmulatorClasses\Nox.cs" />
     <Compile Include="Helpers\ClickWindow.cs" />
     <Compile Include="Helpers\ImageSearch.cs" />

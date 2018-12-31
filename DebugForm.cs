@@ -278,12 +278,57 @@ namespace DebugPlugin
 
         private void EmuListInstanButton_Click(object sender, EventArgs e)
         {
+            if (!Nox.IsNoxInstalled()) return;
+            
             foreach (var item in Nox.ListNoxInstances())
             {
                 AddBotLog(item);
                 EmulatorInstComboBox.Items.Add(item);
                 EmulatorInstComboBox.SelectedIndex = 0;
             }
+        }
+
+        private void ADBScreenshotButton_Click(object sender, EventArgs e)
+        {
+            //EmulatorOpenCheck
+            
+            var timer = new Stopwatch();
+            timer.Start();
+            
+            DebugPictureBox.Invoke(new MethodInvoker(delegate { DebugPictureBox.Image = ADB.ADBScreenshot(); }));
+            
+            timer.Stop();
+            AddBotLog("ADB Screenshot done, it took " + timer.ElapsedMilliseconds + "ms!");
+        }
+
+        private void ADBClickButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ADBClickDragButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ADBStartAppButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ADBInstalledButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ADBStopAppButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ADBAppActiveButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

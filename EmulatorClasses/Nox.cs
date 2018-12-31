@@ -96,7 +96,7 @@ namespace DebugPlugin.EmulatorClasses
             }
         }
 
-        private static string GetNoxPath()
+        public static string GetNoxPath()
         {
             const string keyName = @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Nox";
             const string valueName = "UninstallString";
