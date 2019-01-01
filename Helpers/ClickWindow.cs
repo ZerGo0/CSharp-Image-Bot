@@ -6,11 +6,11 @@ using System.Windows.Forms;
 
 namespace BotTemplate.Helpers
 {
-    public class Clicks
+    internal class Clicks
     {
         #region Click WinApi
         
-        public static void ClickUsingSend(IntPtr wndHandle, int x, int y, int numClicks = 1, int delay = 1, string button = "left")
+        public void ClickUsingSend(IntPtr wndHandle, int x, int y, int numClicks = 1, int delay = 1, string button = "left")
         {
             for (var i = 0; i < numClicks; i++)
             {
@@ -20,7 +20,7 @@ namespace BotTemplate.Helpers
             }
         }
 
-        public static void ClickUsingPost(IntPtr wndHandle, int x, int y, int numClicks = 1, int delay = 1, string button = "left")
+        public void ClickUsingPost(IntPtr wndHandle, int x, int y, int numClicks = 1, int delay = 1, string button = "left")
         {
             for (var i = 0; i < numClicks; i++)
             {
@@ -30,7 +30,7 @@ namespace BotTemplate.Helpers
             }
         }
         
-        private static IntPtr CreateLParam(int LoWord, int HiWord)
+        private IntPtr CreateLParam(int LoWord, int HiWord)
         {
             return (IntPtr)((HiWord << 16) | (LoWord & 0xffff));
         }
@@ -62,7 +62,7 @@ namespace BotTemplate.Helpers
 
         #region ClickUsingMouse
 
-        public static void ClickUsingMouse(IntPtr wndHandle, Point clientPoint)
+        public void ClickUsingMouse(IntPtr wndHandle, Point clientPoint)
         {
             var oldPos = Cursor.Position;
             var oldFocus = GetForegroundWindow();

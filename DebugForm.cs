@@ -1,16 +1,18 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using System.Management;
+using System.Text;
 using AutoIt;
+using BotTemplate.EmulatorClasses;
 using BotTemplate.Helpers;
-using DebugPlugin.EmulatorClasses;
-using Microsoft.Win32;
 
-namespace DebugPlugin
+namespace BotTemplate
 {
     public partial class DebugForm : Form
     {
@@ -25,6 +27,12 @@ namespace DebugPlugin
         public static ComboBox SelectedEmuInstance;
         private bool BotStarted;
 
+        private ADB Adb;
+        private Clicks Clicks;
+        private ImageSearchClass ImageSearch;
+        private CaptureImage CaptureImage;
+        private Nox Nox;
+
         public DebugForm()
         {
             InitializeComponent();
@@ -35,6 +43,19 @@ namespace DebugPlugin
             DebugPictureBox = DebugImageBox;
             BotLogTextbox = BotLog;
             SelectedEmuInstance = EmulatorInstComboBox;
+            
+            Adb = new ADB();
+            Clicks = new Clicks();
+            ImageSearch = new ImageSearchClass();
+            CaptureImage = new CaptureImage();
+            Nox = new Nox();
+            
+            foreach (var item in Nox.ListNoxInstances())
+            {
+                AddBotLog(item);
+                SelectedEmuInstance.Items.Add(item);
+                SelectedEmuInstance.SelectedIndex = 0;
+            }
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -183,7 +204,7 @@ namespace DebugPlugin
             var timer = new Stopwatch();
             timer.Start();
             
-            var debugEMGUIS = ImageSearchClass.ImageSearchEmgu(new[] { ImagePathBox.Text });
+            var debugEMGUIS = ImageSearch.ImageSearchEmgu(new[] { ImagePathBox.Text });
             
             timer.Stop();
             AddBotLog(debugEMGUIS ? "Found the image! It took " + timer.ElapsedMilliseconds + "ms to find it!" : "Couldn't find the image!");
@@ -200,7 +221,7 @@ namespace DebugPlugin
             var timer = new Stopwatch();
             timer.Start();
 
-            var debugAutoItIS = ImageSearchClass.ImageSearchAutoIt(ImagePathBox.Text, WindowRect, "45");
+            var debugAutoItIS = ImageSearch.ImageSearchAutoIt(ImagePathBox.Text, WindowRect, "45");
             
             timer.Stop();
             AddBotLog(debugAutoItIS != null ? "Found the image! It took " + timer.ElapsedMilliseconds + "ms to find it!" : "Couldn't find the image!");
@@ -283,19 +304,19 @@ namespace DebugPlugin
             foreach (var item in Nox.ListNoxInstances())
             {
                 AddBotLog(item);
-                EmulatorInstComboBox.Items.Add(item);
-                EmulatorInstComboBox.SelectedIndex = 0;
+                SelectedEmuInstance.Items.Add(item);
+                SelectedEmuInstance.SelectedIndex = 0;
             }
         }
 
         private void ADBScreenshotButton_Click(object sender, EventArgs e)
         {
-            //EmulatorOpenCheck
+            DebugPictureBox.Invoke(new MethodInvoker(delegate { DebugForm.DebugPictureBox.Image = null; }));
             
             var timer = new Stopwatch();
             timer.Start();
             
-            DebugPictureBox.Invoke(new MethodInvoker(delegate { DebugPictureBox.Image = ADB.ADBScreenshot(); }));
+            DebugPictureBox.Invoke(new MethodInvoker(delegate { DebugPictureBox.Image = Adb.ADBScreenshot(); }));
             
             timer.Stop();
             AddBotLog("ADB Screenshot done, it took " + timer.ElapsedMilliseconds + "ms!");
@@ -303,7 +324,15 @@ namespace DebugPlugin
 
         private void ADBClickButton_Click(object sender, EventArgs e)
         {
-
+            var x = 100;
+            var y = 100;
+            var amount = 1;
+            
+            if (ADBClickXTextBox.Text.Length > 0) x = int.Parse(ADBClickXTextBox.Text);
+            if (ADBClickYTextBox.Text.Length > 0) y = int.Parse(ADBClickYTextBox.Text);
+            if (ADBClickAmountTextBox.Text.Length > 0) amount = int.Parse(ADBClickAmountTextBox.Text);
+            
+            Adb.ADBClick(x, y , amount);
         }
 
         private void ADBClickDragButton_Click(object sender, EventArgs e)
@@ -313,22 +342,27 @@ namespace DebugPlugin
 
         private void ADBStartAppButton_Click(object sender, EventArgs e)
         {
-
+            AddBotLog(Adb.ADBStartApp(ADBPackageNameTextBox.Text, ADBActivityNameTextBox.Text));
         }
 
         private void ADBInstalledButton_Click(object sender, EventArgs e)
         {
-
+            AddBotLog(Adb.ADBAppInstalled(ADBPackageNameTextBox.Text));
         }
 
         private void ADBStopAppButton_Click(object sender, EventArgs e)
         {
-
+            AddBotLog(Adb.ADBStopApp(ADBPackageNameTextBox.Text));
         }
 
         private void ADBAppActiveButton_Click(object sender, EventArgs e)
         {
+            AddBotLog(Adb.ADBCurActiveApp().Contains(ADBPackageNameTextBox.Text).ToString());
+        }
 
+        private void ADBCurActiveAppButton_Click(object sender, EventArgs e)
+        {
+            AddBotLog(Adb.ADBCurActiveApp());
         }
     }
 }

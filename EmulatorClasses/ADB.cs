@@ -1,45 +1,83 @@
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 
-namespace DebugPlugin.EmulatorClasses
+namespace BotTemplate.EmulatorClasses
 {
-    public static class ADB
+    internal class ADB
     {
-        private static string ADBPath()
+        public string RunADB(string arguments)
         {
-             return Nox.GetNoxPath() + "\\nox_adb.exe";
-        }
-        
-        public static Bitmap ADBScreenshot()
-        {
+            var noxHostKey = Nox.NoxInstances.FirstOrDefault(x => x.Key == DebugForm.SelectedEmuInstance.Text).Value;
+
             var adbProcess = new Process
             {
-                StartInfo =
+                StartInfo = new ProcessStartInfo
                 {
-                    FileName = "CMD.exe",
-                    WorkingDirectory = Nox.GetNoxPath(),
-                    RedirectStandardInput = true,
+                    FileName = ADBPath(),
+                    Arguments = "-s " + noxHostKey + " " + arguments,
                     UseShellExecute = false,
+                    RedirectStandardOutput = true,
                     CreateNoWindow = true
                 }
             };
 
             adbProcess.Start();
-            
-            using (var sw = adbProcess.StandardInput)
-            {
-                if (sw.BaseStream.CanWrite)
-                {
-                    sw.WriteLine(@"nox_adb.exe shell screencap -p /sdcard/screencap.png && " +
-                                 "nox_adb.exe pull /sdcard/screencap.png " + Directory.GetCurrentDirectory() + 
-                                 @"\ADBCapture.png");
-                }
-            }
-            
             adbProcess.WaitForExit();
             
-            return new Bitmap(Directory.GetCurrentDirectory() + @"\ADBCapture.png");
+            return adbProcess.StandardOutput.ReadToEnd();
+        } 
+        
+        private string ADBPath()
+        {
+             return new Nox().GetNoxPath() + "\\nox_adb.exe";
         }
+        
+        public Bitmap ADBScreenshot()
+        {
+            var timer = new Stopwatch();
+            timer.Start();
+            RunADB("shell screencap -p /mnt/shared/Image/ADBCapture_" + DebugForm.SelectedEmuInstance.Text + ".png");
+
+            timer.Stop();
+            DebugForm.AddBotLog("ADB Screencap done after " + timer.ElapsedMilliseconds + "ms!");
+            
+            Bitmap tempBitmap;
+            using(var image = new Bitmap(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Nox_share\Image\ADBCapture_" + DebugForm.SelectedEmuInstance.Text + ".png"))
+            {
+                tempBitmap = new Bitmap(image);
+            }
+            
+            return tempBitmap;
+        }
+
+        public void ADBClick(int x, int y, int amount)
+        {
+            RunADB("shell input tap " + x + " " + y );
+        }
+
+        public string ADBStartApp(string packageName, string activityName)
+        {
+            return RunADB("shell \"am start -n " + packageName + "/" + activityName + "\"");
+        }
+
+        public string ADBAppInstalled(string packageName)
+        {
+            return RunADB("shell pm list packages " + packageName);
+        }
+        
+        public string ADBStopApp(string packageName)
+        {
+            return RunADB("shell am force-stop " + packageName);
+        }
+        
+        public string ADBCurActiveApp()
+        {
+            return RunADB("shell \"dumpsys window windows | grep -E 'mCurrentFocus|mFocusedApp'\"");
+        }
+        
+        
     }
 }

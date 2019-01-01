@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Management;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Windows.Forms;
 using Microsoft.Win32;
 
-namespace DebugPlugin.EmulatorClasses
+namespace BotTemplate.EmulatorClasses
 {
-    public static class Nox
+    internal class Nox
     {
         public static string NoxDirectory;
         public static Dictionary<string, string> NoxInstances;
         
-        public static bool IsNoxInstalled()
+        public bool IsNoxInstalled()
         {
             const string keyName = @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Nox";
             const string valueName = "DisplayName";
@@ -31,72 +31,52 @@ namespace DebugPlugin.EmulatorClasses
             }
         }
 
-        public static void StartNox()
+        public void StartNox()
         {
             if (!IsNoxInstalled()) return;
+            
+            if (InstanceAlreadyRunning(DebugForm.SelectedEmuInstance.Text)) return;
 
             var noxExePath = NoxDirectory + @"\Nox.exe";
             
             DebugForm.AddBotLog("Found the path for NOX: " + noxExePath);
 
-            if (DebugForm.SelectedEmuInstance.Items.Count > 0)
-            {
-                Process.Start(noxExePath, "-clone:" + DebugForm.SelectedEmuInstance.SelectedItem);
-            }
-            else
-            {
-                Process.Start(noxExePath);
-            }
+            var noxProcess = new Process();
+            noxProcess = DebugForm.SelectedEmuInstance.Items.Count > 0 ? Process.Start(noxExePath, "-clone:" + DebugForm.SelectedEmuInstance.SelectedItem) : Process.Start(noxExePath);
 
             WaitForEmulator();
+
+            DebugForm.WindowHandle = noxProcess.Handle;
         }
 
-        private static void WaitForEmulator()
+        private bool InstanceAlreadyRunning(string instanceName)
         {
-            var adbPath = NoxDirectory + @"\nox_adb.exe";
-
-            new Process
+            foreach (var process in Process.GetProcessesByName("Nox"))
             {
-                StartInfo =
-                {
-                    FileName = adbPath,
-                    Arguments = "kill-server",
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                }
-            }.Start();
+                DebugForm.AddBotLog("Opened Nox Instance: \n" + GetCommandLine(process));
+                return GetCommandLine(process).Contains(instanceName);
+            }
 
+            return false;
+        }
+
+        private void WaitForEmulator()
+        {
             while (true)
             {
-                var adbProcess = new Process
-                {
-                    StartInfo =
-                    {
-                        FileName = adbPath,
-                        Arguments = "shell getprop dev.bootcomplete",
-                        UseShellExecute = false,
-                        RedirectStandardOutput = true,
-                        CreateNoWindow = true
-                    }
-                };
-
-                adbProcess.Start();
-            
-                var output = adbProcess.StandardOutput.ReadToEnd();
+                var adbProcessOutput = new ADB().RunADB("shell getprop dev.bootcomplete");
                 
-                if (output.Contains("1"))
+                if (adbProcessOutput.Equals("1\r\r\n"))
                 {
-                    DebugForm.AddBotLog(output);
+                    DebugForm.AddBotLog(adbProcessOutput);
                     break;
                 }
-
-                adbProcess.WaitForExit();
                 
                 Thread.Sleep(500);
             }
         }
 
-        public static string GetNoxPath()
+        public string GetNoxPath()
         {
             const string keyName = @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Nox";
             const string valueName = "UninstallString";
@@ -116,7 +96,7 @@ namespace DebugPlugin.EmulatorClasses
             }
         }
 
-        public static IEnumerable<string> ListNoxInstances()
+        public IEnumerable<string> ListNoxInstances()
         {
             if (!IsNoxInstalled()) return null;
             
@@ -165,27 +145,14 @@ namespace DebugPlugin.EmulatorClasses
             return instances;
         }
         
-        /*
-        
-        public bool IsGameActive()
+        private string GetCommandLine(Process process)
         {
-            return this.Adb("shell dumpsys window windows | grep mCurrentFocus").Contains(BlueStacks.ACTIVITY_NAME);
-        }
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT CommandLine FROM Win32_Process WHERE ProcessId = " + process.Id))
+            using (ManagementObjectCollection objects = searcher.Get())
+            {
+                return objects.Cast<ManagementBaseObject>().SingleOrDefault()?["CommandLine"]?.ToString();
+            }
 
-        public bool IsGameInstalled()
-        {
-            return this.Adb("shell pm list packages " + BlueStacks.PACKAGE_NAME).Contains(BlueStacks.PACKAGE_NAME);
         }
-        
-        public void LaunchGame()
-        {
-            this.Adb("shell am start -n " + BlueStacks.ACTIVITY_NAME);
-        }
-        
-        public void TerminateGame()
-        {
-            this.Adb("shell am force-stop " + BlueStacks.PACKAGE_NAME);
-        }
-         */
     }
 }

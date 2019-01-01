@@ -13,13 +13,13 @@ using Emgu.CV.Structure;
 
 namespace BotTemplate.Helpers
 {
-    public static class ImageSearchClass
+    internal class ImageSearchClass
     {
         #region ImageSearch C# (Slow, no tolerance)
 
         public static bool ImageSearchCSharp([MarshalAs(UnmanagedType.LPStr)] string imagePath, Rectangle window)
         {
-            var screenCap = CaptureImage.CaptureFromScreen(window);
+            var screenCap = new CaptureImage().CaptureFromScreen(window);
 
             var searchImage = new Bitmap(imagePath);
 
@@ -68,7 +68,7 @@ namespace BotTemplate.Helpers
         private static extern IntPtr ImageSearch(int x, int y, int right, int bottom,
             [MarshalAs(UnmanagedType.LPStr)] string imagePath);
 
-        public static string[] ImageSearchAutoIt([MarshalAs(UnmanagedType.LPStr)]string imgPath, Rectangle window, string tolerance = "20")
+        public string[] ImageSearchAutoIt([MarshalAs(UnmanagedType.LPStr)]string imgPath, Rectangle window, string tolerance = "20")
         {
             var autoitImagePath = "*" + tolerance + " " + imgPath;
 
@@ -100,7 +100,7 @@ namespace BotTemplate.Helpers
             }
             var testY = resY - absWindowY;
 
-            var screenCap = CaptureImage.CaptureFromScreen(window);
+            var screenCap = new CaptureImage().CaptureFromScreen(window);
 
             var source = new Image<Bgr, byte>(screenCap);
             var template = new Image<Bgr, byte>(imgPath);
@@ -119,7 +119,7 @@ namespace BotTemplate.Helpers
 
         #region ImageSearch EmguCV (Fast, Accurate, easy)
 
-        public static bool ImageSearchEmgu([MarshalAs(UnmanagedType.LPStr)] IEnumerable<string> imagePath, double tolerance = 0.9, Bitmap sourceImage = null)
+        public bool ImageSearchEmgu([MarshalAs(UnmanagedType.LPStr)] IEnumerable<string> imagePath, double tolerance = 0.9, Bitmap sourceImage = null)
         {
             var screenCap = sourceImage;
             
@@ -165,7 +165,7 @@ namespace BotTemplate.Helpers
 
         #region Emgu Extra functions
 
-        public static void WaitForImage([MarshalAs(UnmanagedType.LPStr)] string[] images, double tolerance = 0.9)
+        public void WaitForImage([MarshalAs(UnmanagedType.LPStr)] string[] images, double tolerance = 0.9)
         {
             while (true)
             {
@@ -183,7 +183,7 @@ namespace BotTemplate.Helpers
             }
         }
     
-        public static void WaitForImageAndClick([MarshalAs(UnmanagedType.LPStr)] string image, double tolerance = 0.9)
+        public void WaitForImageAndClick([MarshalAs(UnmanagedType.LPStr)] string image, double tolerance = 0.9)
         {
             while (true)
             {
@@ -195,7 +195,7 @@ namespace BotTemplate.Helpers
             }
         }
     
-        public static bool FindClickEmgu([MarshalAs(UnmanagedType.LPStr)] string imagePath, double tolerance = 0.9)
+        public bool FindClickEmgu([MarshalAs(UnmanagedType.LPStr)] string imagePath, double tolerance = 0.9)
         {
             //TODO: Make the capture method chooseable
             var screenCap = new Bitmap(DebugForm.WindowRect.Width - DebugForm.WindowRect.X,
@@ -219,7 +219,7 @@ namespace BotTemplate.Helpers
                 var clickY = maxLocations[0].Y + template.Size.Height / 2;
         
                 //TODO: Switch based on selected click type
-                Clicks.ClickUsingMouse(DebugForm.WindowHandle, new Point(clickX, clickY));
+                new Clicks().ClickUsingMouse(DebugForm.WindowHandle, new Point(clickX, clickY));
         
                 DebugForm.DebugPictureBox.Invoke(new MethodInvoker(delegate
                 {
@@ -232,11 +232,11 @@ namespace BotTemplate.Helpers
         #endregion
     }
 
-    public static class CaptureImage
+    internal class CaptureImage
     {
         #region Capture Screen
 
-        public static Bitmap CaptureFromScreen(Rectangle rec)
+        public Bitmap CaptureFromScreen(Rectangle rec)
         {
             var screenCap = new Bitmap(rec.Width - rec.X, rec.Height - rec.Y);
 
@@ -247,12 +247,12 @@ namespace BotTemplate.Helpers
             return screenCap;
         }
         
-        public static Image CaptureScreenGDI()
+        public Image CaptureScreenGDI()
         {
             return CaptureWindowGDI(User32.GetDesktopWindow());
         }
 
-        public static Image CaptureWindowGDI(IntPtr handle)
+        public Image CaptureWindowGDI(IntPtr handle)
         {
             var hdcSrc = User32.GetWindowDC(handle);
 
@@ -311,8 +311,8 @@ namespace BotTemplate.Helpers
                 DWMFunctions.UpdateThumb();
                 
             DebugForm.GetWindowRect(dwmCaptureForm.Handle, out var dwmCapRectangle);
-                
-            var dwmCapture = CaptureFromScreen(dwmCapRectangle);
+            
+            var dwmCapture = new CaptureImage().CaptureFromScreen(dwmCapRectangle);
             
             DebugForm.DebugPictureBox.Invoke(
                 new MethodInvoker(delegate { DebugForm.DebugPictureBox.Image = dwmCapture; }));

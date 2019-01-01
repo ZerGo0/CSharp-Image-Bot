@@ -1,7 +1,6 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
-namespace DebugPlugin
+namespace BotTemplate
 {
     partial class DebugForm
     {
@@ -68,32 +67,32 @@ namespace DebugPlugin
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.EmulatorInstComboBox = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.CheckEmulatorButton = new System.Windows.Forms.Button();
-            this.StartEmuButton = new System.Windows.Forms.Button();
-            this.EmuListInstanButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.ADBScreenshotButton = new System.Windows.Forms.Button();
-            this.ADBClickButton = new System.Windows.Forms.Button();
-            this.ADBClickDragButton = new System.Windows.Forms.Button();
-            this.ADBStartAppButton = new System.Windows.Forms.Button();
-            this.ADBInstalledButton = new System.Windows.Forms.Button();
-            this.ADBStopAppButton = new System.Windows.Forms.Button();
-            this.ADBAppActiveButton = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
+            this.ADBPackageNameTextBox = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.ADBActivityNameTextBox = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.ADBClickAmountTextBox = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.ADBClickYTextBox = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.ADBClickXTextBox = new System.Windows.Forms.TextBox();
-            this.ADBActivityNameTextBox = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.ADBPackageNameTextBox = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
+            this.ADBAppActiveButton = new System.Windows.Forms.Button();
+            this.ADBCurActiveAppButton = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.ADBStartAppButton = new System.Windows.Forms.Button();
+            this.ADBInstalledButton = new System.Windows.Forms.Button();
+            this.ADBStopAppButton = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
+            this.ADBScreenshotButton = new System.Windows.Forms.Button();
+            this.ADBClickButton = new System.Windows.Forms.Button();
+            this.ADBClickDragButton = new System.Windows.Forms.Button();
+            this.EmulatorInstComboBox = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.CheckEmulatorButton = new System.Windows.Forms.Button();
+            this.StartEmuButton = new System.Windows.Forms.Button();
+            this.EmuListInstanButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DebugImageBox)).BeginInit();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -515,7 +514,7 @@ namespace DebugPlugin
             this.tabPage3.Controls.Add(this.label15);
             this.tabPage3.Controls.Add(this.ADBClickXTextBox);
             this.tabPage3.Controls.Add(this.ADBAppActiveButton);
-            this.tabPage3.Controls.Add(this.button8);
+            this.tabPage3.Controls.Add(this.ADBCurActiveAppButton);
             this.tabPage3.Controls.Add(this.button9);
             this.tabPage3.Controls.Add(this.ADBStartAppButton);
             this.tabPage3.Controls.Add(this.ADBInstalledButton);
@@ -537,6 +536,204 @@ namespace DebugPlugin
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Emu Debug";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // ADBPackageNameTextBox
+            // 
+            this.ADBPackageNameTextBox.Location = new System.Drawing.Point(244, 642);
+            this.ADBPackageNameTextBox.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.ADBPackageNameTextBox.Name = "ADBPackageNameTextBox";
+            this.ADBPackageNameTextBox.Size = new System.Drawing.Size(492, 38);
+            this.ADBPackageNameTextBox.TabIndex = 50;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(18, 645);
+            this.label17.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(216, 32);
+            this.label17.TabIndex = 49;
+            this.label17.Text = "Package Name:";
+            // 
+            // ADBActivityNameTextBox
+            // 
+            this.ADBActivityNameTextBox.Location = new System.Drawing.Point(244, 694);
+            this.ADBActivityNameTextBox.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.ADBActivityNameTextBox.Name = "ADBActivityNameTextBox";
+            this.ADBActivityNameTextBox.Size = new System.Drawing.Size(492, 38);
+            this.ADBActivityNameTextBox.TabIndex = 48;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(18, 697);
+            this.label16.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(196, 32);
+            this.label16.TabIndex = 47;
+            this.label16.Text = "Activity Name:";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(517, 749);
+            this.label13.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(39, 32);
+            this.label13.TabIndex = 46;
+            this.label13.Text = "n:";
+            // 
+            // ADBClickAmountTextBox
+            // 
+            this.ADBClickAmountTextBox.Location = new System.Drawing.Point(572, 746);
+            this.ADBClickAmountTextBox.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.ADBClickAmountTextBox.Name = "ADBClickAmountTextBox";
+            this.ADBClickAmountTextBox.Size = new System.Drawing.Size(164, 38);
+            this.ADBClickAmountTextBox.TabIndex = 45;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(247, 749);
+            this.label14.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(42, 32);
+            this.label14.TabIndex = 44;
+            this.label14.Text = "Y:";
+            // 
+            // ADBClickYTextBox
+            // 
+            this.ADBClickYTextBox.Location = new System.Drawing.Point(305, 746);
+            this.ADBClickYTextBox.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.ADBClickYTextBox.Name = "ADBClickYTextBox";
+            this.ADBClickYTextBox.Size = new System.Drawing.Size(153, 38);
+            this.ADBClickYTextBox.TabIndex = 43;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(18, 749);
+            this.label15.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(42, 32);
+            this.label15.TabIndex = 42;
+            this.label15.Text = "X:";
+            // 
+            // ADBClickXTextBox
+            // 
+            this.ADBClickXTextBox.Location = new System.Drawing.Point(76, 746);
+            this.ADBClickXTextBox.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.ADBClickXTextBox.Name = "ADBClickXTextBox";
+            this.ADBClickXTextBox.Size = new System.Drawing.Size(145, 38);
+            this.ADBClickXTextBox.TabIndex = 41;
+            // 
+            // ADBAppActiveButton
+            // 
+            this.ADBAppActiveButton.Location = new System.Drawing.Point(24, 936);
+            this.ADBAppActiveButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.ADBAppActiveButton.Name = "ADBAppActiveButton";
+            this.ADBAppActiveButton.Size = new System.Drawing.Size(213, 55);
+            this.ADBAppActiveButton.TabIndex = 38;
+            this.ADBAppActiveButton.Text = "App active";
+            this.ADBAppActiveButton.UseVisualStyleBackColor = true;
+            this.ADBAppActiveButton.Click += new System.EventHandler(this.ADBAppActiveButton_Click);
+            // 
+            // ADBCurActiveAppButton
+            // 
+            this.ADBCurActiveAppButton.Location = new System.Drawing.Point(253, 936);
+            this.ADBCurActiveAppButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.ADBCurActiveAppButton.Name = "ADBCurActiveAppButton";
+            this.ADBCurActiveAppButton.Size = new System.Drawing.Size(253, 55);
+            this.ADBCurActiveAppButton.TabIndex = 39;
+            this.ADBCurActiveAppButton.Text = "Cur Active App";
+            this.ADBCurActiveAppButton.UseVisualStyleBackColor = true;
+            this.ADBCurActiveAppButton.Click += new System.EventHandler(this.ADBCurActiveAppButton_Click);
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(523, 936);
+            this.button9.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(213, 55);
+            this.button9.TabIndex = 40;
+            this.button9.Text = "Placeholder";
+            this.button9.UseVisualStyleBackColor = true;
+            // 
+            // ADBStartAppButton
+            // 
+            this.ADBStartAppButton.Location = new System.Drawing.Point(24, 867);
+            this.ADBStartAppButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.ADBStartAppButton.Name = "ADBStartAppButton";
+            this.ADBStartAppButton.Size = new System.Drawing.Size(213, 55);
+            this.ADBStartAppButton.TabIndex = 35;
+            this.ADBStartAppButton.Text = "Start App";
+            this.ADBStartAppButton.UseVisualStyleBackColor = true;
+            this.ADBStartAppButton.Click += new System.EventHandler(this.ADBStartAppButton_Click);
+            // 
+            // ADBInstalledButton
+            // 
+            this.ADBInstalledButton.Location = new System.Drawing.Point(253, 867);
+            this.ADBInstalledButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.ADBInstalledButton.Name = "ADBInstalledButton";
+            this.ADBInstalledButton.Size = new System.Drawing.Size(253, 55);
+            this.ADBInstalledButton.TabIndex = 36;
+            this.ADBInstalledButton.Text = "App Installed";
+            this.ADBInstalledButton.UseVisualStyleBackColor = true;
+            this.ADBInstalledButton.Click += new System.EventHandler(this.ADBInstalledButton_Click);
+            // 
+            // ADBStopAppButton
+            // 
+            this.ADBStopAppButton.Location = new System.Drawing.Point(523, 867);
+            this.ADBStopAppButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.ADBStopAppButton.Name = "ADBStopAppButton";
+            this.ADBStopAppButton.Size = new System.Drawing.Size(213, 55);
+            this.ADBStopAppButton.TabIndex = 37;
+            this.ADBStopAppButton.Text = "Stop App";
+            this.ADBStopAppButton.UseVisualStyleBackColor = true;
+            this.ADBStopAppButton.Click += new System.EventHandler(this.ADBStopAppButton_Click);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(18, 601);
+            this.label12.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(143, 32);
+            this.label12.TabIndex = 34;
+            this.label12.Text = "ADB Test:";
+            // 
+            // ADBScreenshotButton
+            // 
+            this.ADBScreenshotButton.Location = new System.Drawing.Point(24, 798);
+            this.ADBScreenshotButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.ADBScreenshotButton.Name = "ADBScreenshotButton";
+            this.ADBScreenshotButton.Size = new System.Drawing.Size(213, 55);
+            this.ADBScreenshotButton.TabIndex = 31;
+            this.ADBScreenshotButton.Text = "Screenshot";
+            this.ADBScreenshotButton.UseVisualStyleBackColor = true;
+            this.ADBScreenshotButton.Click += new System.EventHandler(this.ADBScreenshotButton_Click);
+            // 
+            // ADBClickButton
+            // 
+            this.ADBClickButton.Location = new System.Drawing.Point(253, 798);
+            this.ADBClickButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.ADBClickButton.Name = "ADBClickButton";
+            this.ADBClickButton.Size = new System.Drawing.Size(253, 55);
+            this.ADBClickButton.TabIndex = 32;
+            this.ADBClickButton.Text = "Click";
+            this.ADBClickButton.UseVisualStyleBackColor = true;
+            this.ADBClickButton.Click += new System.EventHandler(this.ADBClickButton_Click);
+            // 
+            // ADBClickDragButton
+            // 
+            this.ADBClickDragButton.Location = new System.Drawing.Point(523, 798);
+            this.ADBClickDragButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.ADBClickDragButton.Name = "ADBClickDragButton";
+            this.ADBClickDragButton.Size = new System.Drawing.Size(213, 55);
+            this.ADBClickDragButton.TabIndex = 33;
+            this.ADBClickDragButton.Text = "Click Drag";
+            this.ADBClickDragButton.UseVisualStyleBackColor = true;
+            this.ADBClickDragButton.Click += new System.EventHandler(this.ADBClickDragButton_Click);
             // 
             // EmulatorInstComboBox
             // 
@@ -600,203 +797,6 @@ namespace DebugPlugin
             this.label1.Size = new System.Drawing.Size(282, 32);
             this.label1.TabIndex = 10;
             this.label1.Text = "Debug ImageSearch:";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(18, 601);
-            this.label12.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(143, 32);
-            this.label12.TabIndex = 34;
-            this.label12.Text = "ADB Test:";
-            // 
-            // ADBScreenshotButton
-            // 
-            this.ADBScreenshotButton.Location = new System.Drawing.Point(24, 798);
-            this.ADBScreenshotButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.ADBScreenshotButton.Name = "ADBScreenshotButton";
-            this.ADBScreenshotButton.Size = new System.Drawing.Size(213, 55);
-            this.ADBScreenshotButton.TabIndex = 31;
-            this.ADBScreenshotButton.Text = "Screenshot";
-            this.ADBScreenshotButton.UseVisualStyleBackColor = true;
-            this.ADBScreenshotButton.Click += new System.EventHandler(this.ADBScreenshotButton_Click);
-            // 
-            // ADBClickButton
-            // 
-            this.ADBClickButton.Location = new System.Drawing.Point(253, 798);
-            this.ADBClickButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.ADBClickButton.Name = "ADBClickButton";
-            this.ADBClickButton.Size = new System.Drawing.Size(253, 55);
-            this.ADBClickButton.TabIndex = 32;
-            this.ADBClickButton.Text = "Click";
-            this.ADBClickButton.UseVisualStyleBackColor = true;
-            this.ADBClickButton.Click += new System.EventHandler(this.ADBClickButton_Click);
-            // 
-            // ADBClickDragButton
-            // 
-            this.ADBClickDragButton.Location = new System.Drawing.Point(523, 798);
-            this.ADBClickDragButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.ADBClickDragButton.Name = "ADBClickDragButton";
-            this.ADBClickDragButton.Size = new System.Drawing.Size(213, 55);
-            this.ADBClickDragButton.TabIndex = 33;
-            this.ADBClickDragButton.Text = "Click Drag";
-            this.ADBClickDragButton.UseVisualStyleBackColor = true;
-            this.ADBClickDragButton.Click += new System.EventHandler(this.ADBClickDragButton_Click);
-            // 
-            // ADBStartAppButton
-            // 
-            this.ADBStartAppButton.Location = new System.Drawing.Point(24, 867);
-            this.ADBStartAppButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.ADBStartAppButton.Name = "ADBStartAppButton";
-            this.ADBStartAppButton.Size = new System.Drawing.Size(213, 55);
-            this.ADBStartAppButton.TabIndex = 35;
-            this.ADBStartAppButton.Text = "Start App";
-            this.ADBStartAppButton.UseVisualStyleBackColor = true;
-            this.ADBStartAppButton.Click += new System.EventHandler(this.ADBStartAppButton_Click);
-            // 
-            // ADBInstalledButton
-            // 
-            this.ADBInstalledButton.Location = new System.Drawing.Point(253, 867);
-            this.ADBInstalledButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.ADBInstalledButton.Name = "ADBInstalledButton";
-            this.ADBInstalledButton.Size = new System.Drawing.Size(253, 55);
-            this.ADBInstalledButton.TabIndex = 36;
-            this.ADBInstalledButton.Text = "App Installed";
-            this.ADBInstalledButton.UseVisualStyleBackColor = true;
-            this.ADBInstalledButton.Click += new System.EventHandler(this.ADBInstalledButton_Click);
-            // 
-            // ADBStopAppButton
-            // 
-            this.ADBStopAppButton.Location = new System.Drawing.Point(523, 867);
-            this.ADBStopAppButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.ADBStopAppButton.Name = "ADBStopAppButton";
-            this.ADBStopAppButton.Size = new System.Drawing.Size(213, 55);
-            this.ADBStopAppButton.TabIndex = 37;
-            this.ADBStopAppButton.Text = "Stop App";
-            this.ADBStopAppButton.UseVisualStyleBackColor = true;
-            this.ADBStopAppButton.Click += new System.EventHandler(this.ADBStopAppButton_Click);
-            // 
-            // ADBAppActiveButton
-            // 
-            this.ADBAppActiveButton.Location = new System.Drawing.Point(24, 936);
-            this.ADBAppActiveButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.ADBAppActiveButton.Name = "ADBAppActiveButton";
-            this.ADBAppActiveButton.Size = new System.Drawing.Size(213, 55);
-            this.ADBAppActiveButton.TabIndex = 38;
-            this.ADBAppActiveButton.Text = "App active";
-            this.ADBAppActiveButton.UseVisualStyleBackColor = true;
-            this.ADBAppActiveButton.Click += new System.EventHandler(this.ADBAppActiveButton_Click);
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(253, 936);
-            this.button8.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(253, 55);
-            this.button8.TabIndex = 39;
-            this.button8.Text = "Placeholder";
-            this.button8.UseVisualStyleBackColor = true;
-            // 
-            // button9
-            // 
-            this.button9.Location = new System.Drawing.Point(523, 936);
-            this.button9.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(213, 55);
-            this.button9.TabIndex = 40;
-            this.button9.Text = "Placeholder";
-            this.button9.UseVisualStyleBackColor = true;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(517, 749);
-            this.label13.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(39, 32);
-            this.label13.TabIndex = 46;
-            this.label13.Text = "n:";
-            // 
-            // ADBClickAmountTextBox
-            // 
-            this.ADBClickAmountTextBox.Location = new System.Drawing.Point(572, 746);
-            this.ADBClickAmountTextBox.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.ADBClickAmountTextBox.Name = "ADBClickAmountTextBox";
-            this.ADBClickAmountTextBox.Size = new System.Drawing.Size(164, 38);
-            this.ADBClickAmountTextBox.TabIndex = 45;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(247, 749);
-            this.label14.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(42, 32);
-            this.label14.TabIndex = 44;
-            this.label14.Text = "Y:";
-            // 
-            // ADBClickYTextBox
-            // 
-            this.ADBClickYTextBox.Location = new System.Drawing.Point(305, 746);
-            this.ADBClickYTextBox.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.ADBClickYTextBox.Name = "ADBClickYTextBox";
-            this.ADBClickYTextBox.Size = new System.Drawing.Size(153, 38);
-            this.ADBClickYTextBox.TabIndex = 43;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(18, 749);
-            this.label15.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(42, 32);
-            this.label15.TabIndex = 42;
-            this.label15.Text = "X:";
-            // 
-            // ADBClickXTextBox
-            // 
-            this.ADBClickXTextBox.Location = new System.Drawing.Point(76, 746);
-            this.ADBClickXTextBox.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.ADBClickXTextBox.Name = "ADBClickXTextBox";
-            this.ADBClickXTextBox.Size = new System.Drawing.Size(145, 38);
-            this.ADBClickXTextBox.TabIndex = 41;
-            // 
-            // ADBActivityNameTextBox
-            // 
-            this.ADBActivityNameTextBox.Location = new System.Drawing.Point(244, 694);
-            this.ADBActivityNameTextBox.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.ADBActivityNameTextBox.Name = "ADBActivityNameTextBox";
-            this.ADBActivityNameTextBox.Size = new System.Drawing.Size(492, 38);
-            this.ADBActivityNameTextBox.TabIndex = 48;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(18, 697);
-            this.label16.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(196, 32);
-            this.label16.TabIndex = 47;
-            this.label16.Text = "Activity Name:";
-            // 
-            // ADBPackageNameTextBox
-            // 
-            this.ADBPackageNameTextBox.Location = new System.Drawing.Point(244, 642);
-            this.ADBPackageNameTextBox.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.ADBPackageNameTextBox.Name = "ADBPackageNameTextBox";
-            this.ADBPackageNameTextBox.Size = new System.Drawing.Size(492, 38);
-            this.ADBPackageNameTextBox.TabIndex = 50;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(18, 645);
-            this.label17.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(216, 32);
-            this.label17.TabIndex = 49;
-            this.label17.Text = "Package Name:";
             // 
             // DebugForm
             // 
@@ -882,7 +882,7 @@ namespace DebugPlugin
         private Label label15;
         private TextBox ADBClickXTextBox;
         private Button ADBAppActiveButton;
-        private Button button8;
+        private Button ADBCurActiveAppButton;
         private Button button9;
         private Button ADBStartAppButton;
         private Button ADBInstalledButton;
