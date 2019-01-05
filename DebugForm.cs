@@ -311,6 +311,8 @@ namespace BotTemplate
 
         private void ADBScreenshotButton_Click(object sender, EventArgs e)
         {
+            if (Nox.InstanceAlreadyRunning(SelectedEmuInstance.Text)) return;
+            
             DebugPictureBox.Invoke(new MethodInvoker(delegate { DebugForm.DebugPictureBox.Image = null; }));
             
             var timer = new Stopwatch();
@@ -324,6 +326,8 @@ namespace BotTemplate
 
         private void ADBClickButton_Click(object sender, EventArgs e)
         {
+            if (!Nox.InstanceAlreadyRunning(SelectedEmuInstance.Text)) return;
+            
             var x = 100;
             var y = 100;
             var amount = 1;
@@ -342,26 +346,36 @@ namespace BotTemplate
 
         private void ADBStartAppButton_Click(object sender, EventArgs e)
         {
+            if (!Nox.InstanceAlreadyRunning(SelectedEmuInstance.Text)) return;
+            
             AddBotLog(Adb.ADBStartApp(ADBPackageNameTextBox.Text, ADBActivityNameTextBox.Text));
         }
 
         private void ADBInstalledButton_Click(object sender, EventArgs e)
         {
+            if (!Nox.InstanceAlreadyRunning(SelectedEmuInstance.Text)) return;
+
             AddBotLog(Adb.ADBAppInstalled(ADBPackageNameTextBox.Text));
         }
 
         private void ADBStopAppButton_Click(object sender, EventArgs e)
         {
+            if (!Nox.InstanceAlreadyRunning(SelectedEmuInstance.Text)) return;
+
             AddBotLog(Adb.ADBStopApp(ADBPackageNameTextBox.Text));
         }
 
         private void ADBAppActiveButton_Click(object sender, EventArgs e)
         {
+            if (!Nox.InstanceAlreadyRunning(SelectedEmuInstance.Text)) return;
+
             AddBotLog(Adb.ADBCurActiveApp().Contains(ADBPackageNameTextBox.Text).ToString());
         }
 
         private void ADBCurActiveAppButton_Click(object sender, EventArgs e)
         {
+            if (!Nox.InstanceAlreadyRunning(SelectedEmuInstance.Text)) return;
+
             AddBotLog(Adb.ADBCurActiveApp());
         }
     }

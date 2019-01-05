@@ -49,13 +49,15 @@ namespace BotTemplate.EmulatorClasses
             DebugForm.WindowHandle = noxProcess.Handle;
         }
 
-        private bool InstanceAlreadyRunning(string instanceName)
+        public bool InstanceAlreadyRunning(string instanceName)
         {
             foreach (var process in Process.GetProcessesByName("Nox"))
             {
                 DebugForm.AddBotLog("Opened Nox Instance: \n" + GetCommandLine(process));
                 return GetCommandLine(process).Contains(instanceName);
             }
+
+            DebugForm.AddBotLog(instanceName +" is not running!");
 
             return false;
         }
