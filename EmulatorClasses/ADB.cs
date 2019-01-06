@@ -39,10 +39,11 @@ namespace BotTemplate.EmulatorClasses
         {
             var timer = new Stopwatch();
             timer.Start();
-            RunADB("shell screencap -p /mnt/shared/Image/ADBCapture_" + DebugForm.SelectedEmuInstance.Text + ".png");
+            var debug = RunADB("shell screencap -p /mnt/shared/Image/ADBCapture_" + DebugForm.SelectedEmuInstance.Text + ".png");
+            DebugForm.Log(debug);
 
             timer.Stop();
-            DebugForm.AddBotLog("ADB Screencap done after " + timer.ElapsedMilliseconds + "ms!");
+            DebugForm.WarningLog("ADB Screencap done after " + timer.ElapsedMilliseconds + "ms!");
             
             Bitmap tempBitmap;
             using(var image = new Bitmap(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Nox_share\Image\ADBCapture_" + DebugForm.SelectedEmuInstance.Text + ".png"))

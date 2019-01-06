@@ -11,6 +11,7 @@ using System.Text;
 using AutoIt;
 using BotTemplate.EmulatorClasses;
 using BotTemplate.Helpers;
+using Timer = System.Threading.Timer;
 
 namespace BotTemplate
 {
@@ -52,7 +53,7 @@ namespace BotTemplate
             
             foreach (var item in Nox.ListNoxInstances())
             {
-                AddBotLog(item);
+                Log(item);
                 SelectedEmuInstance.Items.Add(item);
                 SelectedEmuInstance.SelectedIndex = 0;
             }
@@ -60,20 +61,88 @@ namespace BotTemplate
 
         private void StartButton_Click(object sender, EventArgs e)
         {
-            AddBotLog("Bot started!");
+            Log("Bot started!");
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
 
                 BotStarted = true;
-                
+
+                while (BotStarted)
+                {
+                    DebugPictureBox.Invoke(new MethodInvoker(delegate { DebugPictureBox.Image = null; }));
+
+                    var adbScreenCap = Adb.ADBScreenshot();
+                    Log("Test1");
+                    Test1(adbScreenCap);
+                    Log("Test2");
+                    Test2(adbScreenCap);
+                    Log("Test3");
+                    Test3(adbScreenCap);
+                }
+
             }).Start();
+        }
+
+        private void Test1(Bitmap screenCap)
+        {
+            var timer = new Stopwatch();
+            timer.Start();
+
+            var test = ImageSearch.ImageSearchEmgu(new[] {@"G:\SourceCodes\StressTest1.bmp"}, 0.99, screenCap);
+            
+            timer.Stop();
+
+            if (test)
+            {
+                Log($"Found Image in {timer.ElapsedMilliseconds}ms!");
+            }
+            else
+            {
+                ErrorLog($"Image not found in {timer.ElapsedMilliseconds}ms!");
+            }
+        }
+
+        private void Test2(Bitmap screenCap)
+        {
+            var timer = new Stopwatch();
+            timer.Start();
+            var test = ImageSearch.ImageSearchEmgu(new[] { @"G:\SourceCodes\StressTest2.bmp" }, 0.99, screenCap);
+
+            timer.Stop();
+
+            if (test)
+            {
+                Log($"Found Image in {timer.ElapsedMilliseconds}ms!");
+            }
+            else
+            {
+                ErrorLog($"Image not found in {timer.ElapsedMilliseconds}ms!");
+            }
+        }
+
+        private void Test3(Bitmap screenCap)
+        {
+            var timer = new Stopwatch();
+            timer.Start();
+            var test = ImageSearch.ImageSearchEmgu(new[] { @"G:\SourceCodes\StressTest3.bmp" }, 0.99, screenCap);
+
+            timer.Stop();
+
+            if (test)
+            {
+                Log($"Found Image in {timer.ElapsedMilliseconds}ms!");
+            }
+            else
+            {
+                ErrorLog($"Image not found in {timer.ElapsedMilliseconds}ms!");
+            }
         }
 
         private void StopButton_Click(object sender, EventArgs e)
         {
             BotStarted = false;
-            AddBotLog("Bot stopped!");
+            ErrorLog("Bot stopped!");
         }
 
         [DllImport("user32.dll")]
@@ -96,7 +165,7 @@ namespace BotTemplate
                 if (!IsWindow(WindowHandle) || !IsWindow(ControlHandle))
                 {
                     BotStarted = false;
-                    AddBotLog("Application not started, stopping the bot!");
+                    ErrorLog("Application not started, stopping the bot!");
                     return false;
                 }
 
@@ -107,7 +176,7 @@ namespace BotTemplate
                 if (!IsWindow(WindowHandle))
                 {
                     BotStarted = false;
-                    AddBotLog("Application not started, stopping the bot!");
+                    ErrorLog("Application not started, stopping the bot!");
                     return false;
                 }
 
@@ -117,19 +186,61 @@ namespace BotTemplate
             return true;
         }
 
-        public static void AddBotLog(string text)
+        public static void Log(string text)
         {
             BotLogTextbox.Invoke(new MethodInvoker(delegate
             {
-                BotLogTextbox.AppendText("[" + DateTime.Now.ToString("HH:mm:ss") + "] " + text + "\r\n");
+                BotLogTextbox.SelectionStart = BotLogTextbox.TextLength;
+                BotLogTextbox.SelectionLength = 0;
+                BotLogTextbox.SelectionColor = Color.Black;
+                BotLogTextbox.AppendText((!BotLogTextbox.Lines.Any() ? "" : Environment.NewLine) + "[" + DateTime.Now.ToString("HH:mm:ss") + "] " + text);
+                BotLogTextbox.SelectionColor = Color.Black;
+                ScrollToBottom(BotLogTextbox);
             }));
+        }
+
+        public static void WarningLog(string text)
+        {
+            BotLogTextbox.Invoke(new MethodInvoker(delegate
+            {
+                BotLogTextbox.SelectionStart = BotLogTextbox.TextLength;
+                BotLogTextbox.SelectionLength = 0;
+                BotLogTextbox.SelectionColor = Color.DarkOrange;
+                BotLogTextbox.AppendText((!BotLogTextbox.Lines.Any() ? "" : Environment.NewLine) + "[" + DateTime.Now.ToString("HH:mm:ss") + "] " + text);
+                BotLogTextbox.SelectionColor = Color.Black;
+                ScrollToBottom(BotLogTextbox);
+            }));
+        }
+
+        public static void ErrorLog(string text)
+        {
+            BotLogTextbox.Invoke(new MethodInvoker(delegate
+            {
+                BotLogTextbox.SelectionStart = BotLogTextbox.TextLength;
+                BotLogTextbox.SelectionLength = 0;
+                BotLogTextbox.SelectionColor = Color.Red;
+                BotLogTextbox.AppendText((!BotLogTextbox.Lines.Any() ? "" : Environment.NewLine) + "[" + DateTime.Now.ToString("HH:mm:ss") + "] " + text);
+                BotLogTextbox.SelectionColor = Color.Black;
+                ScrollToBottom(BotLogTextbox);
+            }));
+        }
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
+        private const int WM_VSCROLL = 277;
+        private const int SB_PAGEBOTTOM = 7;
+
+        private static void ScrollToBottom(RichTextBox richTextBox)
+        {
+            SendMessage(richTextBox.Handle, WM_VSCROLL, (IntPtr)SB_PAGEBOTTOM, IntPtr.Zero);
+            richTextBox.SelectionStart = richTextBox.Text.Length;
         }
 
         private bool GetWindow()
         {
             if (string.IsNullOrWhiteSpace(WindowNameBox.Text) && string.IsNullOrWhiteSpace(ControlNameBox.Text))
             {
-                AddBotLog("Please enter a window- and/or a controlname!");
+                ErrorLog("Please enter a window- and/or a controlname!");
                 return false;
             }
 
@@ -141,7 +252,7 @@ namespace BotTemplate
                 if (!IsWindow(WindowHandle) && !IsWindow(ControlHandle))
                 {
                     BotStarted = false;
-                    AddBotLog("Application not found, stopping!");
+                    ErrorLog("Application not found, stopping!");
                     return false;
                 }
 
@@ -152,7 +263,7 @@ namespace BotTemplate
                 if (!IsWindow(WindowHandle))
                 {
                     BotStarted = false;
-                    AddBotLog("Application not found, stopping!");
+                    ErrorLog("Application not found, stopping!");
                     return false;
                 }
 
@@ -207,7 +318,15 @@ namespace BotTemplate
             var debugEMGUIS = ImageSearch.ImageSearchEmgu(new[] { ImagePathBox.Text });
             
             timer.Stop();
-            AddBotLog(debugEMGUIS ? "Found the image! It took " + timer.ElapsedMilliseconds + "ms to find it!" : "Couldn't find the image!");
+
+            if (debugEMGUIS)
+            {
+                Log($"Found the image! It took {timer.ElapsedMilliseconds}ms to find it!");
+            }
+            else
+            {
+                ErrorLog("Couldn't find the image!");
+            }
         }
 
         private void AutoItISButton_Click(object sender, EventArgs e)
@@ -224,7 +343,15 @@ namespace BotTemplate
             var debugAutoItIS = ImageSearch.ImageSearchAutoIt(ImagePathBox.Text, WindowRect, "45");
             
             timer.Stop();
-            AddBotLog(debugAutoItIS != null ? "Found the image! It took " + timer.ElapsedMilliseconds + "ms to find it!" : "Couldn't find the image!");
+
+            if (debugAutoItIS != null)
+            {
+                Log($"Found the image! It took {timer.ElapsedMilliseconds}ms to find it!");
+            }
+            else
+            {
+                ErrorLog("Couldn't find the image!");
+            }
         }
 
         private void CSharpISButton_Click(object sender, EventArgs e)
@@ -235,7 +362,7 @@ namespace BotTemplate
 
             if (string.IsNullOrWhiteSpace(ImagePathBox.Text)) return;
 
-
+            ErrorLog("Not implementet yet!");
         }
 
         private void ClickPostMSGButton_Click(object sender, EventArgs e)
@@ -287,7 +414,14 @@ namespace BotTemplate
         {
             var isInstalled = Nox.IsNoxInstalled();
 
-            AddBotLog(isInstalled ? "Emulator installed!" : "Emulator not installed!");
+            if (isInstalled)
+            {
+                Log("Emulator installed!");
+            }
+            else
+            {
+                ErrorLog("Emulator not installed!");
+            }
         }
 
         private void StartEmuButton_Click(object sender, EventArgs e)
@@ -301,9 +435,11 @@ namespace BotTemplate
         {
             if (!Nox.IsNoxInstalled()) return;
             
+            SelectedEmuInstance.Items.Clear();
+            
             foreach (var item in Nox.ListNoxInstances())
             {
-                AddBotLog(item);
+                Log(item);
                 SelectedEmuInstance.Items.Add(item);
                 SelectedEmuInstance.SelectedIndex = 0;
             }
@@ -311,7 +447,7 @@ namespace BotTemplate
 
         private void ADBScreenshotButton_Click(object sender, EventArgs e)
         {
-            if (Nox.InstanceAlreadyRunning(SelectedEmuInstance.Text)) return;
+            if (!Nox.InstanceAlreadyRunning(SelectedEmuInstance.Text)) return;
             
             DebugPictureBox.Invoke(new MethodInvoker(delegate { DebugForm.DebugPictureBox.Image = null; }));
             
@@ -321,7 +457,7 @@ namespace BotTemplate
             DebugPictureBox.Invoke(new MethodInvoker(delegate { DebugPictureBox.Image = Adb.ADBScreenshot(); }));
             
             timer.Stop();
-            AddBotLog("ADB Screenshot done, it took " + timer.ElapsedMilliseconds + "ms!");
+            Log("ADB Screenshot done, it took " + timer.ElapsedMilliseconds + "ms!");
         }
 
         private void ADBClickButton_Click(object sender, EventArgs e)
@@ -348,35 +484,35 @@ namespace BotTemplate
         {
             if (!Nox.InstanceAlreadyRunning(SelectedEmuInstance.Text)) return;
             
-            AddBotLog(Adb.ADBStartApp(ADBPackageNameTextBox.Text, ADBActivityNameTextBox.Text));
+            Log(Adb.ADBStartApp(ADBPackageNameTextBox.Text, ADBActivityNameTextBox.Text));
         }
 
         private void ADBInstalledButton_Click(object sender, EventArgs e)
         {
             if (!Nox.InstanceAlreadyRunning(SelectedEmuInstance.Text)) return;
 
-            AddBotLog(Adb.ADBAppInstalled(ADBPackageNameTextBox.Text));
+            Log(Adb.ADBAppInstalled(ADBPackageNameTextBox.Text));
         }
 
         private void ADBStopAppButton_Click(object sender, EventArgs e)
         {
             if (!Nox.InstanceAlreadyRunning(SelectedEmuInstance.Text)) return;
 
-            AddBotLog(Adb.ADBStopApp(ADBPackageNameTextBox.Text));
+            Log(Adb.ADBStopApp(ADBPackageNameTextBox.Text));
         }
 
         private void ADBAppActiveButton_Click(object sender, EventArgs e)
         {
             if (!Nox.InstanceAlreadyRunning(SelectedEmuInstance.Text)) return;
 
-            AddBotLog(Adb.ADBCurActiveApp().Contains(ADBPackageNameTextBox.Text).ToString());
+            Log(Adb.ADBCurActiveApp().Contains(ADBPackageNameTextBox.Text).ToString());
         }
 
         private void ADBCurActiveAppButton_Click(object sender, EventArgs e)
         {
             if (!Nox.InstanceAlreadyRunning(SelectedEmuInstance.Text)) return;
 
-            AddBotLog(Adb.ADBCurActiveApp());
+            Log(Adb.ADBCurActiveApp());
         }
     }
 }

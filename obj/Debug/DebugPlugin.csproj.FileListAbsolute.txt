@@ -48,7 +48,6 @@ G:\SourceCodes\BotTemplateBin\BotTemplate.exe.config
 G:\SourceCodes\BotTemplateBin\BotTemplate.exe
 G:\SourceCodes\BotTemplateBin\BotTemplate.pdb
 G:\SourceCodes\CSharp-Image-Bot\obj\Debug\DebugPlugin.csprojResolveAssemblyReference.cache
-G:\SourceCodes\CSharp-Image-Bot\obj\Debug\DebugPlugin.DebugForm.resources
 G:\SourceCodes\CSharp-Image-Bot\obj\Debug\DebugPlugin.csproj.GenerateResource.Cache
 G:\SourceCodes\CSharp-Image-Bot\obj\Debug\DebugPlugin.csproj.CoreCompileInputs.cache
 G:\SourceCodes\CSharp-Image-Bot\obj\Debug\BotTemplate.exe
@@ -60,3 +59,4 @@ D:\SourceCodes\CSharp-Image-Bot\obj\Debug\DebugPlugin.csproj.CopyComplete
 D:\SourceCodes\CSharp-Image-Bot\obj\Debug\BotTemplate.exe
 D:\SourceCodes\CSharp-Image-Bot\obj\Debug\BotTemplate.pdb
 D:\SourceCodes\CSharp-Image-Bot\obj\Debug\BotTemplate.DebugForm.resources
+G:\SourceCodes\CSharp-Image-Bot\obj\Debug\BotTemplate.DebugForm.resources

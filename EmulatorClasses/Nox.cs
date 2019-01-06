@@ -39,7 +39,7 @@ namespace BotTemplate.EmulatorClasses
 
             var noxExePath = NoxDirectory + @"\Nox.exe";
             
-            DebugForm.AddBotLog("Found the path for NOX: " + noxExePath);
+            DebugForm.WarningLog("Found the path for NOX: " + noxExePath);
 
             var noxProcess = new Process();
             noxProcess = DebugForm.SelectedEmuInstance.Items.Count > 0 ? Process.Start(noxExePath, "-clone:" + DebugForm.SelectedEmuInstance.SelectedItem) : Process.Start(noxExePath);
@@ -53,11 +53,11 @@ namespace BotTemplate.EmulatorClasses
         {
             foreach (var process in Process.GetProcessesByName("Nox"))
             {
-                DebugForm.AddBotLog("Opened Nox Instance: \n" + GetCommandLine(process));
+                DebugForm.Log("Opened Nox Instance: \n" + GetCommandLine(process));
                 return GetCommandLine(process).Contains(instanceName);
             }
 
-            DebugForm.AddBotLog(instanceName +" is not running!");
+            DebugForm.ErrorLog(instanceName +" is not running!");
 
             return false;
         }
@@ -70,7 +70,7 @@ namespace BotTemplate.EmulatorClasses
                 
                 if (adbProcessOutput.Equals("1\r\r\n"))
                 {
-                    DebugForm.AddBotLog(adbProcessOutput);
+                    DebugForm.WarningLog(adbProcessOutput);
                     break;
                 }
                 
@@ -137,7 +137,7 @@ namespace BotTemplate.EmulatorClasses
                 var instanceNameInt = instanceFile.LastIndexOf('.');
                 var instanceName= instanceFile.Substring(0, instanceNameInt);
                 
-                DebugForm.AddBotLog(instanceName + " Host: " + hostIp + " Port: " + hostPort);
+                DebugForm.WarningLog(instanceName + " Host: " + hostIp + " Port: " + hostPort);
                 
                 NoxInstances.Add(instanceName, hostIp + ":" + hostPort);
             }

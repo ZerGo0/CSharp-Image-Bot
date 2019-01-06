@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using DebugPlugin;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
@@ -155,8 +152,8 @@ namespace BotTemplate.Helpers
                 }
             }
         
-            DebugForm.DebugPictureBox.Invoke(
-                new MethodInvoker(delegate { DebugForm.DebugPictureBox.Image = imageToShow.Bitmap; }));
+            //DebugForm.DebugPictureBox.Invoke(
+            //    new MethodInvoker(delegate { DebugForm.DebugPictureBox.Image = imageToShow.Bitmap; }));
         
             return true;
         }
