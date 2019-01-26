@@ -17,7 +17,7 @@ namespace BotTemplate
 {
     public partial class DebugForm : Form
     {
-        private const string WindowTitle = "Application Title";
+        private const string WindowTitle = "Sena2";
         private const string ControlTitle = "Controlname";
 
         public static IntPtr WindowHandle;
@@ -65,78 +65,21 @@ namespace BotTemplate
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
-
                 BotStarted = true;
 
                 while (BotStarted)
                 {
-                    DebugPictureBox.Invoke(new MethodInvoker(delegate { DebugPictureBox.Image = null; }));
-
-                    var adbScreenCap = Adb.ADBScreenshot();
-                    Log("Test1");
-                    Test1(adbScreenCap);
-                    Log("Test2");
-                    Test2(adbScreenCap);
-                    Log("Test3");
-                    Test3(adbScreenCap);
+                    if (CheckIfAppilcationExists())
+                    {
+                        WarningLog("Application (" + WindowHandle + ")");
+                    }
+                    else
+                    {
+                        ErrorLog(WindowTitle + " not found!");
+                    }
                 }
 
             }).Start();
-        }
-
-        private void Test1(Bitmap screenCap)
-        {
-            var timer = new Stopwatch();
-            timer.Start();
-
-            var test = ImageSearch.ImageSearchEmgu(new[] {@"G:\SourceCodes\StressTest1.bmp"}, 0.99, screenCap);
-            
-            timer.Stop();
-
-            if (test)
-            {
-                Log($"Found Image in {timer.ElapsedMilliseconds}ms!");
-            }
-            else
-            {
-                ErrorLog($"Image not found in {timer.ElapsedMilliseconds}ms!");
-            }
-        }
-
-        private void Test2(Bitmap screenCap)
-        {
-            var timer = new Stopwatch();
-            timer.Start();
-            var test = ImageSearch.ImageSearchEmgu(new[] { @"G:\SourceCodes\StressTest2.bmp" }, 0.99, screenCap);
-
-            timer.Stop();
-
-            if (test)
-            {
-                Log($"Found Image in {timer.ElapsedMilliseconds}ms!");
-            }
-            else
-            {
-                ErrorLog($"Image not found in {timer.ElapsedMilliseconds}ms!");
-            }
-        }
-
-        private void Test3(Bitmap screenCap)
-        {
-            var timer = new Stopwatch();
-            timer.Start();
-            var test = ImageSearch.ImageSearchEmgu(new[] { @"G:\SourceCodes\StressTest3.bmp" }, 0.99, screenCap);
-
-            timer.Stop();
-
-            if (test)
-            {
-                Log($"Found Image in {timer.ElapsedMilliseconds}ms!");
-            }
-            else
-            {
-                ErrorLog($"Image not found in {timer.ElapsedMilliseconds}ms!");
-            }
         }
 
         private void StopButton_Click(object sender, EventArgs e)

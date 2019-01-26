@@ -192,11 +192,22 @@ namespace BotTemplate.Helpers
             }
         }
     
-        public bool FindClickEmgu([MarshalAs(UnmanagedType.LPStr)] string imagePath, double tolerance = 0.9)
+        public bool FindClickEmgu([MarshalAs(UnmanagedType.LPStr)] string imagePath, double tolerance = 0.9, Bitmap sourceImage = null, IntPtr handle = default(IntPtr))
         {
-            //TODO: Make the capture method chooseable
-            var screenCap = new Bitmap(DebugForm.WindowRect.Width - DebugForm.WindowRect.X,
-                DebugForm.WindowRect.Height - DebugForm.WindowRect.Y);
+            var screenCap = sourceImage;
+            
+            //Not very reliable/not really working right now, sizing issues mainly
+            //var screenCap = CaptureImage.DWMFunctions.CaptureDWM();
+
+            if (screenCap == null)
+            {
+                screenCap = new Bitmap(DebugForm.WindowRect.Width - DebugForm.WindowRect.X,
+                    DebugForm.WindowRect.Height - DebugForm.WindowRect.Y);
+                
+                var g = Graphics.FromImage(screenCap);
+        
+                g.CopyFromScreen(DebugForm.WindowRect.X, DebugForm.WindowRect.Y, 0, 0, screenCap.Size, CopyPixelOperation.SourceCopy);
+            }
         
             var source = new Image<Bgr, byte>(screenCap);
             var imageToShow = source.Copy();
@@ -216,7 +227,7 @@ namespace BotTemplate.Helpers
                 var clickY = maxLocations[0].Y + template.Size.Height / 2;
         
                 //TODO: Switch based on selected click type
-                new Clicks().ClickUsingMouse(DebugForm.WindowHandle, new Point(clickX, clickY));
+                new Clicks().ClickUsingPost(handle,clickX, clickY);
         
                 DebugForm.DebugPictureBox.Invoke(new MethodInvoker(delegate
                 {
@@ -249,7 +260,7 @@ namespace BotTemplate.Helpers
             return CaptureWindowGDI(User32.GetDesktopWindow());
         }
 
-        public Image CaptureWindowGDI(IntPtr handle)
+        public Bitmap CaptureWindowGDI(IntPtr handle)
         {
             var hdcSrc = User32.GetWindowDC(handle);
 
@@ -268,7 +279,7 @@ namespace BotTemplate.Helpers
             Gdi32.DeleteDC(hdcDest);
             User32.ReleaseDC(handle, hdcSrc);
 
-            Image image = Image.FromHbitmap(hBitmap);
+            var image = Image.FromHbitmap(hBitmap);
             Gdi32.DeleteObject(hBitmap);
 
             return image;
