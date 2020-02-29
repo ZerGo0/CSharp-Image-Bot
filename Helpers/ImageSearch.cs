@@ -152,8 +152,8 @@ namespace BotTemplate.Helpers
                 }
             }
         
-            //DebugForm.DebugPictureBox.Invoke(
-            //    new MethodInvoker(delegate { DebugForm.DebugPictureBox.Image = imageToShow.Bitmap; }));
+            DebugForm.DebugPictureBox.Invoke(
+                new MethodInvoker(delegate { DebugForm.DebugPictureBox.Image = imageToShow.Bitmap; }));
         
             return true;
         }

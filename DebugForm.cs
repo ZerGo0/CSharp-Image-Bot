@@ -258,7 +258,7 @@ namespace BotTemplate
             var timer = new Stopwatch();
             timer.Start();
             
-            var debugEMGUIS = ImageSearch.ImageSearchEmgu(new[] { ImagePathBox.Text });
+            var debugEMGUIS = ImageSearch.ImageSearchEmgu(new[] { ImagePathBox.Text }, 0.98);
             
             timer.Stop();
 
